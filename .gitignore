@@ -26,3 +26,9 @@ node_modules
 
 # Users Environment Variables
 .lock-wscript
+
+# the momentum build itself
+build
+
+# osx specific
+.DS-Store

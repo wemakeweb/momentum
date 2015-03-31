@@ -1,0 +1,33 @@
+{
+  "name": "momentum",
+  "version": "0.0.1",
+  "description": "",
+  "main": "gulpfile.js",
+  "dependencies": {},
+  "devDependencies": {
+    "jsxhint": "~0.13.3",
+    "babel": "~4.7.16",
+    "rimraf": "~2.3.2"
+  },
+  "scripts": {
+    "app:build:js": "browserify -d lib/app.js -o build/bundle.fluxury.js",
+    "app:build": "npm run build:js",
+    "app:watch:js": "watchify lib/app.js -o build/bundle.fluxury.js -v -d",
+    "app:watch": "npm run watch:js",
+    "lint": "jsxhint -c .jshintrc src/*.js",
+    "clean": "rimraf build/*",
+    "build": "npm run clean && babel src --out-dir build",
+    "start": "npm run build && node --harmony ./build/momentum.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://wemakeweb@github.com/wemakeweb/momentum.git"
+  },
+  "author": "Sebastian Otto",
+  "license": "none",
+  "bugs": {
+    "url": "https://github.com/wemakeweb/momentum/issues"
+  },
+  "homepage": "https://github.com/wemakeweb/momentum",
+  "private": true
+}
