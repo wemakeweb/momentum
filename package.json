@@ -3,7 +3,20 @@
   "version": "0.0.1",
   "description": "",
   "main": "gulpfile.js",
-  "dependencies": {},
+  "dependencies": {
+    "co": "^4.5.2",
+    "co-exec": "~1.1.0",
+    "co-fs": "~1.2.0",
+    "delegates": "0.0.3",
+    "generator-foreach": "~0.1.0",
+    "koa-generic-session": "~1.2.0",
+    "koa-router": "~3.2.3",
+    "koa-static": "~1.4.6",
+    "koala": "^0.9.1",
+    "rethinkdbdash": "^2.0.9",
+    "thunkify": "~2.1.2",
+    "underscore": "~1.6.0"
+  },
   "devDependencies": {
     "jsxhint": "~0.13.3",
     "babel": "~4.7.16",
@@ -17,7 +30,7 @@
     "lint": "jsxhint -c .jshintrc src/*.js",
     "clean": "rimraf build/*",
     "build": "npm run clean && babel src --out-dir build",
-    "start": "npm run build && node --harmony ./build/momentum.js"
+    "start": "npm run build && iojs ./build/momentum.js"
   },
   "repository": {
     "type": "git",

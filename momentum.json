@@ -1,0 +1,10 @@
+{
+	"database": {
+		"adapter": "rethinkdb",
+		"tableName": "dev"
+	},
+
+	"http": {
+		"port": "8000"
+	}
+}
