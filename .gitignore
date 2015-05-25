@@ -32,3 +32,4 @@ build
 
 # osx specific
 .DS-Store
+.DS_Store
