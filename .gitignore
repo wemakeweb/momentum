@@ -31,5 +31,9 @@ node_modules
 build
 
 # osx specific
-.DS-Store
 .DS_Store
+
+# rethinkdb
+rethinkdb_data
+
+jspm_packages

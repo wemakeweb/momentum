@@ -1,8 +1,12 @@
 import r from 'rethinkdbdash';
 import co from 'co';
+import React from 'react';
+
 import config from '../momentum.json';
 import DatabaseAdapter from './databaseAdapter';
 import HttpServer from './http';
+
+import UserApplication from '../app/site';
 
 class Momentum {
 	constructor(){
@@ -32,6 +36,19 @@ class Momentum {
 		if(config.http){
 			this.server  = new HttpServer(config.http);
 		}
+
+
+		//let instance = new UserApplication();
+
+		/*for(let route in instance.routes){
+			this.server.bind('get', route, function*(params){
+				let view = instance.execute(this.request.url, params)
+			})
+		}*/
+
+		this.server.bind('get', '/', function*(){
+			this.body = React.renderToString(React.createElement(UserApplication, {}))
+		});
 
 		yield this.run();
 	}

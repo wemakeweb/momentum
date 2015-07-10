@@ -13,24 +13,28 @@
     "koa-router": "~3.2.3",
     "koa-static": "~1.4.6",
     "koala": "^0.9.1",
+    "merge": "^1.2.0",
+    "path-to-regexp": "^1.2.0",
+    "react": "^0.13.3",
     "rethinkdbdash": "^2.0.9",
     "thunkify": "~2.1.2",
     "underscore": "~1.6.0"
   },
   "devDependencies": {
-    "jsxhint": "~0.13.3",
     "babel": "~4.7.16",
+    "jspm": "^0.15.7",
+    "jsxhint": "~0.13.3",
     "rimraf": "~2.3.2"
   },
   "scripts": {
     "app:build:js": "browserify -d lib/app.js -o build/bundle.fluxury.js",
-    "app:build": "npm run build:js",
+    "app:build": "npm run app:build:js",
     "app:watch:js": "watchify lib/app.js -o build/bundle.fluxury.js -v -d",
     "app:watch": "npm run watch:js",
     "lint": "jsxhint -c .jshintrc src/*.js",
     "clean": "rimraf build/*",
-    "build": "npm run clean && babel src --out-dir build",
-    "start": "npm run build && iojs ./build/momentum.js"
+    "build": "npm run clean && babel src --out-dir ./build/src && babel app --out-dir ./build/app && cp momentum.json ./build/momentum.json",
+    "start": "npm run build && iojs ./build/src/momentum.js"
   },
   "repository": {
     "type": "git",
@@ -42,5 +46,20 @@
     "url": "https://github.com/wemakeweb/momentum/issues"
   },
   "homepage": "https://github.com/wemakeweb/momentum",
-  "private": true
+  "private": true,
+  "jspm": {
+    "directories": {},
+    "dependencies": {
+      "debug": "npm:debug@^2.2.0",
+      "jquery": "github:components/jquery@^2.1.4",
+      "merge": "npm:merge@^1.2.0",
+      "path-to-regexp": "npm:path-to-regexp@^1.2.0",
+      "react": "npm:react@^0.14.0-beta1"
+    },
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.1.13",
+      "babel-runtime": "npm:babel-runtime@^5.1.13",
+      "core-js": "npm:core-js@^0.9.4"
+    }
+  }
 }

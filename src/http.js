@@ -64,6 +64,10 @@ export default class HttpServer{
 		this.server.listen(this.config.port);
 		console.log('up & running @ %s', this.config.port);
 	}
+
+	bind(method, path, fn){
+		this.server[method](path, fn);
+	}
 }
 
 
@@ -220,9 +224,10 @@ function* errorHandler(next){
   		this.status = status;
 
   		if(404 == status){
-  			yield Risotto.application.onNotFoundError(this, next);
+  			//yield Risotto.application.onNotFoundError(this, next);
   		} else {
-  			yield Risotto.application.onError(this, next, err);
+  			console.log(err.stack);
+  			//yield Risotto.application.onError(this, next, err);
   		}
   	}
 }
