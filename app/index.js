@@ -28,7 +28,7 @@ export class App extends MomentumApp {
 		return ( 
 			<div class="row" onclick={this.click.bind(this)}>
 				<div class="col-md-6">
-					Hey Bitches
+					{this.router.render()}
 				</div>
 				<a href="/welcome">Msks</a>
 				<a href="/noMatch">noMtach</a>

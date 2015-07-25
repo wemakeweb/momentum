@@ -9,9 +9,7 @@ export default class MomentumView extends EventEmitter{
 	 * the document node the view 
 	 * is mounted on
 	 */
-	node = null
-
-
+	documentNode = null
 	state = {}
 	_dirty = false;
 
@@ -41,13 +39,14 @@ export default class MomentumView extends EventEmitter{
 		let renderTree = this.render();
 		this._renderToNode(newNode, renderTree);
 
-		if(this.node){
+		if(this.documentNode){
 			console.log('replaceChild')
-			this.node.parentNode.replaceChild(newNode, this.node);
-		} 
+			this.node.parentNode.replaceChild(newNode, this.documentNode);
+		} else {
+			this.documentNode = newNode;
+		}
 
-		this.node = newNode;
-		return this.node;
+		return this.documentNode;
 	}
 
 
@@ -104,7 +103,7 @@ export default class MomentumView extends EventEmitter{
 
     	for(let eventType in this.domEvents){
     		DomEvent.add(
-    			this.node,
+    			this.documentNode,
     			eventType,
     			this.genericEventHandler.bind(this, eventType)
     		);
@@ -131,7 +130,7 @@ export default class MomentumView extends EventEmitter{
     genericEventHandler(eventType, ev){
     	let {event, target} = DomEvent.normalize(ev);
     	let listener = this.domEvents[eventType];
-    	
+
     	for(let i = 0, len = listener.length; i < len; i++){
     		if(listener[i].fn(event) === false){
     			break;
