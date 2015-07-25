@@ -1,5 +1,6 @@
 import MomentumApp from '../src/MomentumApp';
 import MomentumRouter from '../src/MomentumRouter';
+import { default as React } from '../src/ReactMock' 
 
 function Welcome (argument) {
 	// body...
@@ -19,13 +20,19 @@ export class App extends MomentumApp {
 		this.router = new MomentumRouter(this.mountPoint, this.routes);
 	}
 
+	click (){
+		console.log('hiphophorray')
+	}
+
 	render(){
-		return `<div class="row">
-					<div class="col-md-6">
-						${ this.router.render() }
-					</div>
-					<a href="/welcome">Match</a>
-					<a href="/noMatch">noMtach</a>
-				</div>`;
+		return ( 
+			<div class="row" onclick={this.click.bind(this)}>
+				<div class="col-md-6">
+					Hey Bitches
+				</div>
+				<a href="/welcome">Msks</a>
+				<a href="/noMatch">noMtach</a>
+			</div>
+		);
 	}
 }

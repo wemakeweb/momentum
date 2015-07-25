@@ -27,23 +27,15 @@ class MomentumRuntime {
 	}
 
 	render(){
-		let representation = this.instance.render();
+		let view = this.instance.renderToNode();
 
-		if(!representation){
+		if(!view){
 			throw new Error('Your Application should render something');
 		}
 
 		if(isClient){
-			/**
-			 * in case its not a node
-			 */
-			if(isType(String, representation)){
-				let div = document.createElement('div');
-				div.innerHTML = String(representation);
-				representation = div;
-			}
-
-			document.body.appendChild(representation);
+			document.body.appendChild(view);
+			this.instance.trigger('attached');
 		}
 	}
 }

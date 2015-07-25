@@ -27,6 +27,8 @@ System.config({
     "merge": "npm:merge@1.2.0",
     "path-to-regexp": "npm:path-to-regexp@1.2.0",
     "react": "npm:react@0.14.0-beta1",
+    "t7": "npm:t7@0.2.18",
+    "wolfy87-eventemitter": "npm:wolfy87-eventemitter@4.2.11",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"
     },
@@ -317,6 +319,9 @@ System.config({
     "npm:string_decoder@0.10.31": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0"
     },
+    "npm:t7@0.2.18": {
+      "process": "github:jspm/nodelibs-process@0.1.1"
+    },
     "npm:through@2.3.8": {
       "process": "github:jspm/nodelibs-process@0.1.1",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
@@ -336,6 +341,9 @@ System.config({
     },
     "npm:vm-browserify@0.0.4": {
       "indexof": "npm:indexof@0.0.1"
+    },
+    "npm:wolfy87-eventemitter@4.2.11": {
+      "fs": "github:jspm/nodelibs-fs@0.1.2"
     }
   }
 });
