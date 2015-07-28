@@ -7,7 +7,7 @@ import Params from './params';
 import Path from 'path';
 import os from 'os';
 
-export default class HttpServer{
+export default class MomentumServer{
 	constructor(config){
 		this.config = config;
 		var server = koala();
@@ -60,7 +60,7 @@ export default class HttpServer{
 		//server.use(serve(Risotto.APP + 'public'));
 	}
 
-	*run(){
+	run(){
 		this.server.listen(this.config.port);
 		console.log('up & running @ %s', this.config.port);
 	}
