@@ -1,12 +1,11 @@
-import { isType, isClient } from './utils';
-import { setAttr, inlineAttrs, isInlineAttr, isEvent } from './Dom';
-
+import { isType, isFunction } from './utils';
 
 export class MomentumNode {
 	children = []
 	nodeName =  null
 	attributes = {}
 	documentNode = null
+	attached = false
 
 	constructor(nodeName, attributes, ...children){
 		this.nodeName = nodeName;
