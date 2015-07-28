@@ -1,38 +1,30 @@
 import MomentumApp from '../src/MomentumApp';
 import MomentumRouter from '../src/MomentumRouter';
 import { default as React } from '../src/ReactMock' 
-
-function Welcome (argument) {
-	// body...
-}
-
-Welcome.prototype.render = function() {
-	return `<div> Welcome View </div>`;
-};
+import Countdown from './Countdown';
 
 export class App extends MomentumApp {
 	routes = {
-		'/welcome': Welcome
-	}
-
-	constructor(){
-		super();
-		this.router = new MomentumRouter(this.mountPoint, this.routes);
+		'/welcome': Countdown
 	}
 
 	click (){
-		console.log('hiphophorray')
+		console.log('click',this)
 	}
 
 	render(){
 		return ( 
-			<div class="row" onclick={this.click.bind(this)}>
+			<div class="row" onclick={this.click}>
 				<div class="col-md-6">
-					{this.router.render()}
+					<MomentumRouter mountPoint={this.mountPoint} routes={this.routes} />
 				</div>
 				<a href="/welcome">Msks</a>
 				<a href="/noMatch">noMtach</a>
+				<div class="col-md-6">
+					<Countdown until={new Date().getTime() + 1000*60} />
+				</div>
 			</div>
+
 		);
 	}
 }
