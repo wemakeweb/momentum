@@ -1,11 +1,11 @@
 import MomentumApp from '../src/MomentumApp';
 import MomentumRouter from '../src/MomentumRouter';
 import { default as React } from '../src/ReactMock' 
-import Countdown from './Countdown';
+import Clock from './Clock';
 
 export class App extends MomentumApp {
 	routes = {
-		'/welcome': Countdown
+		'/welcome': Clock
 	}
 
 	click (){
@@ -21,7 +21,7 @@ export class App extends MomentumApp {
 				<a href="/welcome">Msks</a>
 				<a href="/noMatch">noMtach</a>
 				<div class="col-md-6">
-					<Countdown until={new Date().getTime() + 1000*60} />
+					<Clock />
 				</div>
 			</div>
 
