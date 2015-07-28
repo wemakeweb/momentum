@@ -6,4 +6,9 @@ export function isType(Type, obj){
 };
 
 
+export function isFunction(obj){
+	return toString.call(obj) == '[object Function]';
+};
+
+
 export const isClient = (() => typeof window !== 'undefined' )();
