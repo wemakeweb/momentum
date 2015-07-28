@@ -1,20 +1,22 @@
 import MomentumView from './MomentumView';
-import React from 'react';
 import {isClient} from './utils';
 import * as DomEvent from './DomEvent';
 import * as Dom from './Dom';
 import pathToRegexp from 'path-to-regexp';
+import { default as React } from '../src/ReactMock' 
+
+
 
 export default class MomentumRouter extends MomentumView {
 	routes = []
 
-	constructor(mountPoint, routes){
-		super();
+	constructor(attrs, ...childs){
+		super(attrs, ...childs);
 
-		this.mountPoint = mountPoint;
+		this.mountPoint = this.attrs.mountPoint;
 
-		for(let route in routes){
-			this.add(route, routes[route]);
+		for(let route in this.attrs.routes){
+			this.add(route, this.attrs.routes[route]);
 		}
 
 		this.bind();
@@ -79,7 +81,7 @@ export default class MomentumRouter extends MomentumView {
 
 		DomEvent.prevent(event);
 		history.pushState({}, document.title, url)
-		this.set({route: match});
+		this.setState({route: match});
 	}
 
 	match(path){
@@ -101,14 +103,15 @@ export default class MomentumRouter extends MomentumView {
 
 	render(){
 		if(this.state.route){
-			return `<div>${this.renderView()}</div>`
+			return (<div>{this.renderView()}</div>);
 		} else {
-			return `<div>Nothing Selected</div>`;
+			return (<div>Nothing Selected</div>);
 		}
 	}
 
 	renderView(){
-		let view = new this.state.route.handler();
-		return view.render();
+		let handler = new this.state.route.handler();
+		let view = handler.render();
+		return view;
 	}
 }
