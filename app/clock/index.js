@@ -1,5 +1,10 @@
-import MomentumView from '../src/MomentumView';
-import { default as React } from '../src/ReactMock' 
+import MomentumView from '../../src/MomentumView';
+import { default as React } from '../../src/ReactMock' 
+
+
+@assets({
+	css: 'style.css'
+})
 
 export default class Clock extends MomentumView{
 	state = {
