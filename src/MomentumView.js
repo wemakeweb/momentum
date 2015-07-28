@@ -3,55 +3,102 @@ import { isType, isClient } from './utils';
 import { setAttr, inlineAttrs, isInlineAttr, isEvent } from './Dom';
 import * as DomEvent from './DomEvent';
 import EventEmitter from 'wolfy87-eventemitter';
+import { MomentumNode } from './MomentumNode';
+import * as MomentumTree from './MomentumTree';
 
 export default class MomentumView extends EventEmitter{
 	/**
 	 * the document node the view 
 	 * is mounted on
 	 */
-	documentNode = null
-	state = {}
+	documentNode = null;
+	state = {};
 	_dirty = false;
 
 	/**
 	 * naiv implementation
 	 */
-	set(obj){
+	setState(obj){
 		merge(this.state, obj);
 		this._dirty = true;
 		this.renderToNode();
 		this._dirty = false;
 	}
 
+	/**
+	 * holds the attributes 
+	 * defaults to {}
+	 */
+	attrs = {};
 
-	constructor(){
+
+	/**
+	 * holds the child views/nodes
+	 * defaults to null
+	 */
+	childViews = [];
+
+	constructor(attrs, ...childs){
 		super();
+		this.attrs = attrs;
+		this.childs = childs;
+
+		// bind all events
 		this.on('attached', this._onAttached.bind(this));
+	}
+
+	/**
+	 * renders view and updates the 
+	 * dom
+	 */
+	renderToNode(parentNode){
+		let newNode = document.createElement('div');
+		this.nodeTree = this.render();
+		this._renderToNode(newNode, this.nodeTree);
+
+		if(parentNode){
+			/**
+			 * initial render
+			 */
+			parentNode.appendChild(newNode);
+		} else if(this.documentNode.parentNode){
+			/**
+			 * if there is a `parentNode` we can
+			 * call `.replaceChild` safely
+			 */
+			this.documentNode.parentNode.replaceChild(newNode, this.documentNode);
+		}
+		
+		this.documentNode = newNode;
 	}
 
 
 	/**
-	 * renders component and updates
-	 * the dom node
+	 * _renderToNode
+	 * renders all child nodes recursively
 	 */
-	renderToNode(){
-		let newNode = document.createElement('div');
-		let renderTree = this.render();
-		this._renderToNode(newNode, renderTree);
-
-		if(this.documentNode){
-			console.log('replaceChild')
-			this.node.parentNode.replaceChild(newNode, this.documentNode);
-		} else {
-			this.documentNode = newNode;
-		}
-
-		return this.documentNode;
-	}
-
-
 	_renderToNode(parentNode, node){
 		let selfRepresentation;
+
+		if(typeof node === 'undefined'){
+			throw new Error(`Render: Trying to render object of type ${toString.call(node)}. 
+				Only Strings, MomentumNode or MomentumViews are allowed`);
+		}
+
+
+		if(node instanceof MomentumView){
+			this.childViews.push(node);
+			node.renderToNode(parentNode);
+			return;
+		}
+
+		if(!(node instanceof MomentumNode)){
+			selfRepresentation = document.createTextNode(node.toString());
+			parentNode.appendChild(selfRepresentation);
+			return;
+		}
+
+
 
 		if(node.nodeName === 'text'){
 			selfRepresentation = document.createTextNode(node.attributes.text);
@@ -80,8 +127,9 @@ export default class MomentumView extends EventEmitter{
 			}
 		}
 
-		node.documentNode = selfRepresentation;
 		parentNode.appendChild(selfRepresentation);
+
+		return node;
 	}
 
 	/**
@@ -95,12 +143,7 @@ export default class MomentumView extends EventEmitter{
      * after this method has been called.
      */
     
-    // attached state variable
-    attached = false
-
     _onAttached(){
-    	this.attached = true;
-
     	for(let eventType in this.domEvents){
     		DomEvent.add(
     			this.documentNode,
@@ -108,6 +151,18 @@ export default class MomentumView extends EventEmitter{
     			this.genericEventHandler.bind(this, eventType)
     		);
     	}
+
+    	MomentumTree.set(this.nodeTree, 'attached', true);
+
+    	this.childViews.forEach(function(view) {
+    		view.trigger('attached')
+    	});
+
+    	this.onAttached();
+    }
+
+    onAttached(){
+    	//… your attached callback here
     }
 
 
@@ -123,7 +178,7 @@ export default class MomentumView extends EventEmitter{
 
 		this.domEvents[eventType].push({
 			node, 
-			fn
+			fn: fn.bind(this)
 		});
 	}
 
