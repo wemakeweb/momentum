@@ -1,4 +1,4 @@
-import Momentum from 'Momentum';
+import Momentum from '../../src/Momentum';
 import { default as React } from '../../src/ReactMock' 
 
 @assets({

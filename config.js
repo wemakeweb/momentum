@@ -19,7 +19,6 @@ System.config({
 
 System.config({
   "map": {
-    "Momentum": "src/Momentum",
     "babel": "npm:babel-core@5.6.16",
     "babel-runtime": "npm:babel-runtime@5.6.16",
     "core-js": "npm:core-js@0.9.18",
@@ -28,7 +27,6 @@ System.config({
     "merge": "npm:merge@1.2.0",
     "path-to-regexp": "npm:path-to-regexp@1.2.0",
     "react": "npm:react@0.14.0-beta1",
-    "t7": "npm:t7@0.2.18",
     "wolfy87-eventemitter": "npm:wolfy87-eventemitter@4.2.11",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"
@@ -348,4 +346,3 @@ System.config({
     }
   }
 });
-
