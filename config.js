@@ -19,6 +19,7 @@ System.config({
 
 System.config({
   "map": {
+    "Momentum": "src/Momentum",
     "babel": "npm:babel-core@5.6.16",
     "babel-runtime": "npm:babel-runtime@5.6.16",
     "core-js": "npm:core-js@0.9.18",

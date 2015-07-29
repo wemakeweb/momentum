@@ -1,9 +1,8 @@
-import MomentumApp from '../src/MomentumApp';
-import MomentumRouter from '../src/MomentumRouter';
+import Momentum from 'Momentum';
 import { default as React } from '../src/ReactMock' 
 import Clock from './Clock/index';
 
-export class App extends MomentumApp {
+export class App extends Momentum.App {
 	routes = {
 		'/welcome': Clock
 	}
@@ -16,7 +15,7 @@ export class App extends MomentumApp {
 		return ( 
 			<div class="row" onclick={this.click}>
 				<div class="col-md-6">
-					<MomentumRouter mountPoint={this.mountPoint} routes={this.routes} />
+					<Momentum.Router mountPoint={this.mountPoint} routes={this.routes} />
 				</div>
 				<a href="/welcome">Msks</a>
 				<a href="/noMatch">noMtach</a>
