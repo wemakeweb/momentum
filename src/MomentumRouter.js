@@ -3,9 +3,7 @@ import {isClient} from './utils';
 import * as DomEvent from './DomEvent';
 import * as Dom from './Dom';
 import pathToRegexp from 'path-to-regexp';
-import { default as React } from '../src/ReactMock' 
-
-
+import { default as React } from './ReactMock' 
 
 export default class MomentumRouter extends MomentumView {
 	routes = []
