@@ -23,7 +23,6 @@ export class App extends Momentum.App {
 					<Clock />
 				</div>
 			</div>
-
 		);
 	}
 }
