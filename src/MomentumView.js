@@ -106,7 +106,7 @@ export default class MomentumView extends EventEmitter{
 			selfRepresentation = document.createElement(node.nodeName);
 
 			if(node.hasChilds()){
-				Array.from(node.children).forEach((child) => {
+				Array.from(node.children).forEach(child => {
 					this._renderToNode(selfRepresentation, child);
 				});
 			}
@@ -154,7 +154,7 @@ export default class MomentumView extends EventEmitter{
 
     	MomentumTree.set(this.nodeTree, 'attached', true);
 
-    	this.childViews.forEach(function(view) {
+    	this.childViews.forEach(view => {
     		view.trigger('attached')
     	});
 

@@ -6,7 +6,7 @@ export function set(nodeTree, property, value){
     nodeTree[property] = value;
 
 	if(nodeTree.children){
-		nodeTree.children.forEach((child) => {
+		nodeTree.children.forEach(child => {
 			set(child, property, value);
 		})
 	}

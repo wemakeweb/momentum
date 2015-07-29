@@ -88,7 +88,7 @@ export default class MomentumRouter extends MomentumView {
 		let routes = this.routes;
 		let match;
 
-		routes.forEach((route) => {
+		routes.forEach(route => {
 			let regExp = new RegExp(route.regex);
 			
 			console.info('Match %s against %s', path, route.regex);
