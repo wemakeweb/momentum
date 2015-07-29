@@ -1,4 +1,7 @@
 {
 	"blacklist":["regenerator"],
-	"compact": false
+	"compact": false,
+	"optional": [
+      "es7"
+    ]
 }

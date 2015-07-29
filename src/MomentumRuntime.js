@@ -1,41 +1,28 @@
 //import config from '../momentum.json';
+import * as MomentumAssets from './MomentumAssets';
+import {isType, isClient} from './utils';
 import * as UserApplication from '../app/index' 
-import {isType, isClient} from 'src/utils';
+import ClientRuntime from './runtime/client/index';
 
 class MomentumRuntime {
 	constructor(){
-		if(isClient){			
-			if(UserApplication.App){
-				this.instance = new UserApplication.App();
-			} else if(UserApplication) {
-				this.instance = new UserApplication();
-			} else {
-				throw new Error('Your Application was not found!');
-			}
+		this.findApplication();
 
-			this.initializeClient();
+		if(isClient){			
+			this.runtime = new ClientRuntime(this.app);
+		} else {
+			let ServerRuntime = require('./runtime/server');
+			this.runtime = new ServerRuntime(this.app, __dirname);
 		}
-		
 	}
 	
-	initializeClient(){
-		/*if(!config){
-			throw new Error('No Momentum.json file found.');
-		}*/
-
-		this.render();
-	}
-
-	render(){
-		let view = this.instance.renderToNode();
-
-		if(!view){
-			throw new Error('Your Application should render something');
-		}
-
-		if(isClient){
-			document.body.appendChild(view);
-			this.instance.trigger('attached');
+	findApplication(){
+		if(UserApplication.App){
+			this.app = UserApplication.App;
+		} else if(UserApplication) {
+			this.app = UserApplication;
+		} else {
+			throw new Error('Your Application was not found!');
 		}
 	}
 }

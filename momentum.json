@@ -6,5 +6,24 @@
 
 	"http": {
 		"port": "8000"
+	},
+
+	"babelOptions": {
+		"server": {
+			"blacklist":["regenerator"],
+			"compact": false,
+			"optional": [
+		      "es7"
+		    ]
+		},
+		"client": {
+		    "optional": [
+		      "runtime",
+		      "es7"
+		    ],
+		    "blacklist": [
+		      "regenerator"
+		    ]
+		}
 	}
 }
