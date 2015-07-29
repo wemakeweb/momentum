@@ -1,6 +1,6 @@
 import { isType, isFunction } from './utils';
 
-export class MomentumNode {
+export default class MomentumNode {
 	children = []
 	nodeName =  null
 	attributes = {}
@@ -22,17 +22,5 @@ export class MomentumNode {
 
 	hasChilds(){
 		return this.children.length > 0;
-	}
-}
-
-export class Div extends MomentumNode {
-	constructor(attributes, ...children){
-		super('div', attributes, ...children);
-	}
-}
-
-export class A extends MomentumNode {
-	constructor(attributes, ...children){
-		super('a', attributes, ...children);
 	}
 }

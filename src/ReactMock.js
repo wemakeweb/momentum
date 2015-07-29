@@ -1,4 +1,4 @@
-import { MomentumNode } from 'src/MomentumNode';
+import MomentumNode from 'src/MomentumNode';
 import { isFunction } from 'src/utils';
 
 export default class ReactMock {}

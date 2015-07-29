@@ -3,7 +3,7 @@ import { isType, isClient } from './utils';
 import { setAttr, inlineAttrs, isInlineAttr, isEvent } from './Dom';
 import * as DomEvent from './DomEvent';
 import EventEmitter from 'wolfy87-eventemitter';
-import { MomentumNode } from './MomentumNode';
+import MomentumNode from './MomentumNode';
 import * as MomentumTree from './MomentumTree';
 
 export default class MomentumView extends EventEmitter{
