@@ -1,5 +1,6 @@
 import MomentumServer from './MomentumServer';
 import Path from 'path';
+import MomentumData from '../../data/server/';
 
 export default class ServerRuntime {
 	constructor(instance, dirname){
@@ -11,13 +12,24 @@ export default class ServerRuntime {
 			root: rootPath
 		};
 
-		/**
-		 * TODO: Preflight check if all files
-		 * are present
-		*/
-
 		this.config = config;
-		let server = new MomentumServer(config);
-		server.run();
+
+		this.checkEnvironment();
+		this.initializeData();
+		this.initializeHttp();
+	}
+
+	checkEnvironment(){
+		//check if all needed app folders are present etc
+
+	}
+
+	initializeHttp(){
+		this.server = new MomentumServer(this.config);
+		this.server.run();
+	}
+
+	initializeData(){
+		this.data = new MomentumData(this.config);
 	}
 }
