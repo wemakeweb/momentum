@@ -1,4 +1,3 @@
-import merge from 'merge';
 import { isType, isClient } from './utils';
 import { setAttr, inlineAttrs, isInlineAttr, isEvent } from './Dom';
 import * as DomEvent from './DomEvent';
@@ -13,16 +12,17 @@ export default class MomentumView extends EventEmitter{
 	 */
 	documentNode = null;
 	state = {};
-	_dirty = false;
 
 	/**
-	 * naiv implementation
+	 * currently we rerender the view
+	 * everytime the state changes
+	 * this is very ineffectiv in terms 
+	 * of dom performance and should be 
+	 * changed
 	 */
 	setState(obj){
-		merge(this.state, obj);
-		this._dirty = true;
+		Object.assign(this.state, obj);
 		this.renderToNode();
-		this._dirty = false;
 	}
 
 	/**
@@ -34,7 +34,7 @@ export default class MomentumView extends EventEmitter{
 
 	/**
 	 * holds the child views/nodes
-	 * defaults to null
+	 * defaults to []
 	 */
 	childViews = [];
 
@@ -98,8 +98,6 @@ export default class MomentumView extends EventEmitter{
 			return;
 		}
 
-
-
 		if(node.nodeName === 'text'){
 			selfRepresentation = document.createTextNode(node.attributes.text);
 		} else {
@@ -160,7 +158,8 @@ export default class MomentumView extends EventEmitter{
 
     	this.onAttached();
     }
-
+    
+    // @overwrite
     onAttached(){
     	//… your attached callback here
     }
