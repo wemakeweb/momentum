@@ -6,7 +6,7 @@ import ClientRuntime from './runtime/client/index';
 
 class MomentumRuntime {
 	constructor(){
-		this.findApplication();
+		this.findUserApplication();
 
 		if(isClient){			
 			this.runtime = new ClientRuntime(this.app);
@@ -16,7 +16,7 @@ class MomentumRuntime {
 		}
 	}
 	
-	findApplication(){
+	findUserApplication(){
 		if(UserApplication.App){
 			this.app = UserApplication.App;
 		} else if(UserApplication) {
