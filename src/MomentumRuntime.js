@@ -1,11 +1,12 @@
-//import config from '../momentum.json';
-import * as MomentumAssets from './MomentumAssets';
+import Momentum from './Momentum';
+import * as Assets from './MomentumAssets';
 import {isType, isClient} from './utils';
 import * as UserApplication from '../app/index' 
 import ClientRuntime from './runtime/client/index';
 
-class MomentumRuntime {
+export default class MomentumRuntime {
 	constructor(){
+		
 		this.findUserApplication();
 
 		if(isClient){			
@@ -14,6 +15,8 @@ class MomentumRuntime {
 			let ServerRuntime = require('./runtime/server');
 			this.runtime = new ServerRuntime(this.app, __dirname);
 		}
+
+		return this.runtime;
 	}
 	
 	findUserApplication(){
@@ -27,4 +30,8 @@ class MomentumRuntime {
 	}
 }
 
-new MomentumRuntime();
+if(!Momentum.Runtime){
+	Momentum.Runtime = new MomentumRuntime();
+} else {
+	throw new Error('A Momentum.Runtime is already running in this context');
+}
