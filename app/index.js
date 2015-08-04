@@ -1,6 +1,6 @@
 import Momentum from '../src/Momentum';
 import { default as React } from '../src/ReactMock' 
-import Clock from './Clock/index';
+import Clock from './components/clock/index';
 
 export class App extends Momentum.App {
 	routes = {
