@@ -1,5 +1,4 @@
-import Momentum from '../../src/Momentum';
-import { default as React } from '../../src/ReactMock' 
+import { default as React } from '../../../src/ReactMock' 
 
 @assets({
 	styles:['style.css'],
