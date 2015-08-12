@@ -44,7 +44,7 @@ export default class MomentumServer{
 		);
 
 		this.server.use('/jspm_packages',
-			express.static(this.config.dirs.root + '/jspm_packages')
+			express.static(this.config.dirs.app + '/jspm_packages')
 		);
 
 		this.server.use('/src',
@@ -52,7 +52,7 @@ export default class MomentumServer{
 		);
 
 		this.serveStaticFiles({
-			'/': 'app/index.html',
+			'/': 'index.html',
 			'/config.js': 'config.js'
 		});
 	}
@@ -63,7 +63,7 @@ export default class MomentumServer{
 				server.get(route, (req, res, next) => {
 					res.sendFile(root + '/' + file);
 				});
-			})(this.server, this.config.dirs.root, map[route]);
+			})(this.server, this.config.dirs.app, map[route]);
 		}
 	}
 

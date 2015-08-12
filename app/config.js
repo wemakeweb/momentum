@@ -25,6 +25,7 @@ System.config({
     "debug": "npm:debug@2.2.0",
     "jquery": "github:components/jquery@2.1.4",
     "merge": "npm:merge@1.2.0",
+    "ms": "npm:ms@0.7.1",
     "path-to-regexp": "npm:path-to-regexp@1.2.0",
     "react": "npm:react@0.14.0-beta1",
     "setimmediate": "npm:setimmediate@1.0.2",
