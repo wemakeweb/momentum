@@ -1,17 +1,28 @@
 import { default as React } from '../../../src/ReactMock' 
+import ClockModel from '../../models/ClockModel';
 
 @assets({
 	styles:['style.css'],
 	scripts: ['test.js']
 })
 
-export default class Clock extends Momentum.View {
+export default class Clock extends Momentum.Component {
 	state = {
 		time: this.getClock()
 	}
 
+	storeSelect(){
+		return ClockModel.get(this.attrs.id);
+	}
+
+	storeDidUpdate(record){
+		this.setState({
+			time: record.hour + ':' + record.minutes + ':' + record.seconds
+		});
+	}
+
 	onAttached(){
-		this.update();
+		//this.update();
 	}
 
 	getClock(){

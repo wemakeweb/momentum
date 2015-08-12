@@ -20,7 +20,7 @@ export class App extends Momentum.App {
 				<a href="/welcome">Msks</a>
 				<a href="/noMatch">noMtach</a>
 				<div class="col-md-6">
-					<Clock />
+					<Clock id="76b53d98-702e-4e95-a968-660c61b3ea3d"/>
 				</div>
 			</div>
 		);
