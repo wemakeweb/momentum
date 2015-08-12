@@ -89,7 +89,7 @@ export default class MomentumStore {
 			action: Query.CREATE,
 			model: this.getIdentifier()
 		});
-		let record = new Momemtum.Record(data);
+		let record = new Momentum.Record(data);
 		let validation = this.validateWithSchema(record);
 		
 		if(validation === true){
