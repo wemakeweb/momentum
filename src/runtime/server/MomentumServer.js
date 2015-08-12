@@ -52,7 +52,7 @@ export default class MomentumServer{
 		);
 
 		this.serveStaticFiles({
-			'/': 'index.html',
+			'/': 'app/index.html',
 			'/config.js': 'config.js'
 		});
 	}
