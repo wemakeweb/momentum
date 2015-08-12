@@ -3,9 +3,13 @@ import { setAttr, inlineAttrs, isInlineAttr, isEvent } from './Dom';
 import * as DomEvent from './DomEvent';
 import EventEmitter from 'wolfy87-eventemitter';
 import MomentumNode from './MomentumNode';
+import MomentumStore from './data/stores/MomentumStore';
 import * as MomentumTree from './MomentumTree';
+import Debug from 'debug';
 
-export default class MomentumView extends EventEmitter{
+let debug = Debug('momentum:component');
+
+export default class MomentumComponent extends EventEmitter{
 	/**
 	 * the document node the view 
 	 * is mounted on
@@ -22,7 +26,12 @@ export default class MomentumView extends EventEmitter{
 	 */
 	setState(obj){
 		Object.assign(this.state, obj);
-		this.renderToNode();
+		
+		if(isClient){
+			this.renderToNode();
+		}
+
+		debug('setState');
 	}
 
 	/**
@@ -45,6 +54,11 @@ export default class MomentumView extends EventEmitter{
 
 		// bind all events
 		this.on('attached', this._onAttached.bind(this));
+		this.initializeStoreBinding();
+	}
+
+	renderToString(){
+		return '<String>';
 	}
 
 	/**
@@ -82,11 +96,11 @@ export default class MomentumView extends EventEmitter{
 
 		if(typeof node === 'undefined'){
 			throw new Error(`Render: Trying to render object of type ${toString.call(node)}. 
-				Only Strings, MomentumNode or MomentumViews are allowed`);
+				Only Strings, MomentumNode or MomentumComponent are allowed`);
 		}
 
 
-		if(node instanceof MomentumView){
+		if(node instanceof MomentumComponent){
 			this.childViews.push(node);
 			node.renderToNode(parentNode);
 			return;
@@ -121,7 +135,7 @@ export default class MomentumView extends EventEmitter{
 				let eventType = attribute.replace(/on/, '');
 				this.registerDOMEvent(node, eventType, node.attributes[attribute])				
 			} else {
-				console.log('Render: %s is not valid inline attribute', attribute);
+				debug('render: %o is not valid inline attribute', attribute);
 			}
 		}
 
@@ -191,4 +205,55 @@ export default class MomentumView extends EventEmitter{
     		}
     	}
     }
+
+    /**
+     * storeFetch should fetch all your
+     * model dependencies and return the 
+     * model cursors
+     * @return MomentumModel
+	*/
+
+    storeSelect(){
+		
+	}
+
+	/**
+	 * gets called after one or many
+	 * of your model dependencies has been
+	 * updated. Arguments are records of the models
+	 * returned in `storeSelect`
+	 * @arguments MomentumRecod(s)
+	 */
+
+	storeDidUpdate(){
+		
+	}
+
+	/**
+	 * @api internal
+	 */
+
+	storeBindings = []
+
+	initializeStoreBinding(){
+		let model = this.storeSelect();
+
+		if(!model) return;
+
+		model.then((record) => {
+			this.storeDidUpdate(record);
+			this.storeBindings.push(record.meta.query);
+			this.bindStore();
+		}).catch((err) => {
+			throw err;
+		})
+	}
+
+	bindStore(){
+		let didUpdate = this.storeDidUpdate.bind(this);
+
+		this.storeBindings.forEach((query) => {
+			MomentumStore.bind(query.model, query, didUpdate);
+		});
+	}
 }
