@@ -8,31 +8,35 @@ export default class MomentumDriver {
 		this.options = options;
 	}
 
-	tableCreate(){
+	tableCreate(Model){
 
 	}
 
-	create(document, data) {
+	create(Model, record, query) {
 
 	}
 
-	read(model, key) {
+	read(Model, key, query) {
 
 	}
 
-	update(document, data, callback) {
+	update(Model, record, query) {
 
 	}
 
-	destroy(model, key) {
+	destroy(Model, key) {
 
 	}
 
-	findOne(model, spec, callback) {
+	findOne(Model, spec, query) {
 
 	}
 
-	find(model, spec, callback) {
+	find(Model, spec, query) {
+
+	}
+
+	bind(query, fn){
 
 	}
 }
