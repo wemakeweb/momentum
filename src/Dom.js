@@ -55,7 +55,8 @@ let inlineAttrs = [
     'src',
     'tabIndex',
     'target',
-    'title'
+    'title',
+    'type'
 ];
 
 export function isInlineAttr(attr){
