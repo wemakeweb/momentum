@@ -68,7 +68,7 @@ export default class MomentumComponent extends EventEmitter{
 	renderToNode(parentNode){
 		let newNode = document.createElement('div');
 		this.nodeTree = this.render();
-		this._renderToNode(newNode, this.nodeTree);
+		this._renderToNode(newNode, this.nodeTree, [0]);
 
 		if(parentNode){
 			/**
@@ -91,7 +91,7 @@ export default class MomentumComponent extends EventEmitter{
 	 * _renderToNode
 	 * renders all child nodes recursively
 	 */
-	_renderToNode(parentNode, node){
+	_renderToNode(parentNode, node, mids){
 		let selfRepresentation;
 
 		if(typeof node === 'undefined'){
@@ -117,9 +117,22 @@ export default class MomentumComponent extends EventEmitter{
 		} else {
 			selfRepresentation = document.createElement(node.nodeName);
 
+			//set mid to identifiy on dom events
+			node.mid = mids.join('.');
+			
+			setAttr(
+				selfRepresentation,
+				'data-mid',
+				node.mid
+			);
+
 			if(node.hasChilds()){
+				let index = 0;
+
 				Array.from(node.children).forEach(child => {
-					this._renderToNode(selfRepresentation, child);
+					let subMids = mids.slice(0)
+					subMids.push(index++);
+					this._renderToNode(selfRepresentation, child, subMids);
 				});
 			}
 		}
@@ -139,6 +152,7 @@ export default class MomentumComponent extends EventEmitter{
 			}
 		}
 
+		
 		parentNode.appendChild(selfRepresentation);
 
 		return node;
@@ -197,11 +211,15 @@ export default class MomentumComponent extends EventEmitter{
 
     genericEventHandler(eventType, ev){
     	let {event, target} = DomEvent.normalize(ev);
-    	let listener = this.domEvents[eventType];
+    	let listeners = this.domEvents[eventType];
 
-    	for(let i = 0, len = listener.length; i < len; i++){
-    		if(listener[i].fn(event) === false){
-    			break;
+    	for(let i = 0, len = listeners.length; i < len; i++){
+    		let listener = listeners[i];
+
+    		if(listener.node.mid === target.getAttribute('data-mid')){
+    			if(listener.fn(event) === false){
+    				break;
+    			}
     		}
     	}
     }
@@ -249,11 +267,41 @@ export default class MomentumComponent extends EventEmitter{
 		})
 	}
 
+	/**
+	 * @api internal
+	 */
+
 	bindStore(){
 		let didUpdate = this.storeDidUpdate.bind(this);
 
 		this.storeBindings.forEach((query) => {
 			MomentumStore.bind(query.model, query, didUpdate);
 		});
+	}
+
+	/**
+	 * does querySelection based on the component
+	 * documentNode
+	 */
+
+	find(selector){
+		if(this.documentNode){
+			return this.documentNode.querySelector(selector);
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * does querySelectionAll based on the component
+	 * documentNode
+	 */
+
+	findAll(selector){
+		if(this.documentNode){
+			return this.documentNode.querySelectorAll(selector);
+		} else {
+			return null;
+		}
 	}
 }

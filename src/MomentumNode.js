@@ -6,6 +6,7 @@ export default class MomentumNode {
 	attributes = {}
 	documentNode = null
 	attached = false
+	mid = null
 
 	constructor(nodeName, attributes, ...children){
 		this.nodeName = nodeName;
