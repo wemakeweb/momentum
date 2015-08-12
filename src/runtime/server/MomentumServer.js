@@ -1,17 +1,21 @@
 import express from 'express';
+import http from 'http';
 
 export default class MomentumServer{
 	constructor(config){
 		this.config = config;
-		
-		let server = express();
-		
+
+		let server = express(); 
+		let rawHttp = http.Server(server);
+
 		server.use(this.logErrors);
 		server.use(this.clientErrorHandler);
 		server.use(this.genericErrorHandler);
 
 		// expose server
 		this.server = server;
+		this.rawHttp = rawHttp;
+
 		this.bindServerRendering();
 	}
 
@@ -66,7 +70,7 @@ export default class MomentumServer{
 	run(){
 		let port = this.config.http.port || 3000;
 
-		this.server.listen(port);
+		this.rawHttp.listen(port);
 		console.log('Server listening at: %s', port);
 	}
 }
