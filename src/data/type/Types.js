@@ -5,7 +5,7 @@ let Types = {};
 Types.string = class StringType extends MomentumType {
 	static identifier = 'string'
 	static validate(value){
-		return toString.call(value) === '[object String]';
+		return toString.call(value) === '[object String]' && value.trim() !== '';
 	}
 }
 
