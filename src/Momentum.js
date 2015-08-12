@@ -1,15 +1,19 @@
 import MomentumApp from './MomentumApp';
-import MomentumView from './MomentumView';
+import MomentumComponent from './MomentumComponent';
 import MomentumRouter from './MomentumRouter';
-import MomentumModel from './data/MomentumModel';
 import MomentumType from './data/type/Types';
+import MomentumRecord from './data/MomentumRecord';
+import RethinkStore from './data/stores/RethinkStore';
 
 let Momentum = {};
 Momentum.App = MomentumApp;
-Momentum.View = MomentumView;
+Momentum.Component = MomentumComponent;
 Momentum.Router = MomentumRouter;
-Momentum.Model = MomentumModel;
 Momentum.Type = MomentumType;
+Momentum.Record = MomentumRecord;
+Momentum.Stores = {
+	RethinkStore
+};
 
 var globalNamespace;
 

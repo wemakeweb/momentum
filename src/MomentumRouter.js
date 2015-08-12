@@ -1,11 +1,11 @@
-import MomentumView from './MomentumView';
+import MomentumComponent from './MomentumComponent';
 import {isClient} from './utils';
 import * as DomEvent from './DomEvent';
 import * as Dom from './Dom';
 import pathToRegexp from 'path-to-regexp';
 import { default as React } from './ReactMock' 
 
-export default class MomentumRouter extends MomentumView {
+export default class MomentumRouter extends MomentumComponent {
 	routes = []
 
 	constructor(attrs, ...childs){

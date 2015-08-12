@@ -1,11 +1,11 @@
 {
 	"database": {
-		"adapter": "rethinkdb",
+		"driver": "RethinkDriver",
 		"tableName": "dev"
 	},
-
+	
 	"http": {
-		"port": "8000"
+		"port": 8000
 	},
 
 	"babelOptions": {
