@@ -18,6 +18,6 @@ export default class MomentumType {
 	}
 
 	static toString(){
-		return 'MomentumType ' + this.identifier
+		return '[MomentumType ' + this.identifier + ']';
 	}
 }
