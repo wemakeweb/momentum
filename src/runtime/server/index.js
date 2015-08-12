@@ -1,6 +1,7 @@
 import MomentumServer from './MomentumServer';
 import Path from 'path';
 import MomentumData from '../../data/server/';
+import io from 'socket.io';
 
 export default class ServerRuntime {
 	constructor(instance, dirname){
@@ -15,21 +16,21 @@ export default class ServerRuntime {
 		this.config = config;
 
 		this.checkEnvironment();
+		this.initializeTransports();
 		this.initializeData();
-		this.initializeHttp();
 	}
 
 	checkEnvironment(){
 		//check if all needed app folders are present etc
-
 	}
 
-	initializeHttp(){
-		this.server = new MomentumServer(this.config);
-		this.server.run();
+	initializeTransports(){
+		this.http = new MomentumServer(this.config);
+		this.socket = io(this.http.rawHttp);
+		this.http.run();
 	}
 
 	initializeData(){
-		this.data = new MomentumData(this.config);
+		this.data = new MomentumData(this.config, this.socket);
 	}
 }
