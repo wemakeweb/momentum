@@ -15,10 +15,13 @@ Momentum.Stores = {
 	RethinkStore
 };
 
+Momentum.isClient = false;
+
 var globalNamespace;
 
 if(typeof window !== 'undefined'){
 	globalNamespace = window;
+	Momentum.isClient = true;
 } else if(typeof global !== 'undefined'){
 	globalNamespace = global; 
 } else {
