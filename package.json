@@ -1,8 +1,11 @@
 {
-  "name": "momentum",
+  "name": "momentumjs",
   "version": "0.0.1",
   "description": "",
-  "main": "gulpfile.js",
+  "main": "./src/MomentumRuntime.js",
+  "bin": {
+    "momentumjs": "./bin/momentum"
+  },
   "dependencies": {
     "express": "^4.13.1",
     "merge": "^1.2.0",
