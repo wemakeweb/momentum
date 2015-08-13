@@ -1,0 +1,12 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+var package = require('../package.json');
+
+var cmd;
+cmd = program.command('run');
+cmd.option('--prod');
+cmd.option('--port [port]');
+cmd.unknownOption = NOOP;
+cmd.description('');
+cmd.action(require('../src/MomentumRuntime'));
