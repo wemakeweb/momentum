@@ -1,6 +1,7 @@
 import MomentumData from '../../data/client/index';
 import {} from 'setimmediate';
 import Debug from 'debug';
+import io from 'socket.io';
 
 export default class ClientRuntime {
 	constructor(UserApplication){
