@@ -4,7 +4,14 @@ var clean = require('gulp-clean');
  
 gulp.task('build', function () {
     return gulp.src('src/**/*.js')
-        .pipe(babel())
+        .pipe(babel({
+			"blacklist":["regenerator"],
+			"compact": false,
+			"optional": [
+		      "es7",
+		       "runtime"
+		    ]
+		}))
         .pipe(gulp.dest('lib'));
 });
 
