@@ -27,7 +27,7 @@ add the momentumjs comandline interface to your `package.json` scripts field lik
 than run:
 
 ```bash
-$ mommentumjs run
+$ momentumjs run
 ```
 
 
