@@ -39,8 +39,6 @@ export default class MomentumServer{
 		 * Only whitelist the folders 
 		 * we want to serve
 		 */
-		let modulePath = path.normalize(__dirname + '/../../../');
-
 		this.server.use('/components',
 			express.static(this.config.root + '/components')
 		);
@@ -50,16 +48,12 @@ export default class MomentumServer{
 		);
 
 		this.server.use('/jspm_packages',
-			express.static(modulePath + '/statics/jspm_packages')
-		);
-
-		this.server.use('/node_modules/momentumjs/lib',
-			express.static(modulePath + 'lib')
+			express.static(this.config.root + '/jspm_packages')
 		);
 
 		this.serveStaticFiles({
 			'/': this.config.root + '/index.html',
-			'/config.js': modulePath + '/statics/config.js',
+			'/config.js': this.config.root + '/config.js',
 			'/index.js' : this.config.root + '/index.js'
 		});
 	}
