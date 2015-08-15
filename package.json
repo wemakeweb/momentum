@@ -7,6 +7,7 @@
     "momentumjs": "./bin/momentum"
   },
   "dependencies": {
+    "babel-runtime": "^5.8.20",
     "commander": "^2.8.1",
     "express": "^4.13.1",
     "merge": "^1.2.0",

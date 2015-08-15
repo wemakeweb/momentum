@@ -33,4 +33,4 @@ lib
 # rethinkdb
 rethinkdb_data
 
-jspm_packages
+#jspm_packages

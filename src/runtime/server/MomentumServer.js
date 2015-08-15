@@ -1,5 +1,6 @@
 import express from 'express';
 import http from 'http';
+import path from 'path';
 
 export default class MomentumServer{
 	constructor(config){
@@ -38,6 +39,7 @@ export default class MomentumServer{
 		 * Only whitelist the folders 
 		 * we want to serve
 		 */
+		let modulePath = path.normalize(__dirname + '/../../../');
 
 		this.server.use('/components',
 			express.static(this.config.root + '/components')
@@ -48,27 +50,28 @@ export default class MomentumServer{
 		);
 
 		this.server.use('/jspm_packages',
-			express.static(this.config.root + '/../jspm_packages')
+			express.static(modulePath + '/statics/jspm_packages')
 		);
 
-		this.server.use('/node_modules',
-			express.static(this.config.root + '/../node_modules')
+		this.server.use('/node_modules/momentumjs/lib',
+			express.static(modulePath + 'lib')
 		);
+		console.log(modulePath + 'lib')
 
 		this.serveStaticFiles({
-			'/': 'index.html',
-			'/config.js': 'config.js',
-			'/index.js' : 'index.js'
+			'/': this.config.root + '/index.html',
+			'/config.js': modulePath + '/statics/config.js',
+			'/index.js' : this.config.root + '/index.js'
 		});
 	}
 
 	serveStaticFiles(map){
 		for(let route in map){
-			(function(server, root, file) {
+			(function(server, file) {
 				server.get(route, (req, res, next) => {
-					res.sendFile(root + '/' + file);
+					res.sendFile(file);
 				});
-			})(this.server, this.config.root, map[route]);
+			})(this.server, map[route]);
 		}
 	}
 
