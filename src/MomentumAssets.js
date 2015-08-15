@@ -12,9 +12,13 @@ if(typeof window !== 'undefined'){
 
 globalNamespace.assets = function(assets){
 	if(isClient){
-		assets.styles.forEach(function(path){
-			System.import(path)
-		})
+		if(Array.isArray(assets)){
+			assets.forEach((path) => {
+				System.import(path)
+			});
+		} else {
+			System.import(assets);
+		}
 	}
 
 	return function(classDeclaration){
