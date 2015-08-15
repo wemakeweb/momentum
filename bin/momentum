@@ -61,7 +61,8 @@ gulp.task('clean', function(){
 gulp.task('copy', function(){
 	return gulp.src([
 		'index.html',
-		'momentum.json'
+		'momentum.json',
+		'config.js'
 	], {
 		base: root
 	}).pipe(gulp.dest(buildDir));
