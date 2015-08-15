@@ -14,7 +14,6 @@
     "gulp-spawn": "^0.3.0",
     "merge": "^1.2.0",
     "path-to-regexp": "^1.2.0",
-    "react": "^0.13.3",
     "rethinkdbdash": "^2.0.9",
     "run-sequence": "^1.1.2",
     "setimmediate": "^1.0.2",
@@ -29,7 +28,6 @@
     "gulp-babel": "^5.2.0",
     "gulp-clean": "^0.3.1",
     "jspm": "^0.15.7",
-    "jsxhint": "~0.13.3",
     "mocha": "^2.2.5",
     "mocha-babel": "^3.0.0",
     "rimraf": "~2.3.2"
@@ -44,7 +42,7 @@
     "url": "https://wemakeweb@github.com/wemakeweb/momentum.git"
   },
   "author": "Sebastian Otto",
-  "license": "none",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/wemakeweb/momentum/issues"
   },
