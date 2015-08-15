@@ -22,7 +22,7 @@ export default function(){
 		 * this require call should only be executed
 		 * by the jspm /systemjs require
 		 */
-		let UserApplication = require('__app');
+		let UserApplication = require('index');
 
 		if(UserApplication.App){
 			app = UserApplication.App;
