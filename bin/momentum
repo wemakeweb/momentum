@@ -5,6 +5,8 @@ var gulp = require("gulp");
 var babel = require("gulp-babel");
 var clean = require('gulp-clean');
 var runSeq = require('run-sequence').use(gulp);
+var path = require('path');
+var shell = require('gulp-shell');
 
 var package = require('../package.json');
 var root = process.cwd();
@@ -15,17 +17,30 @@ program
 	.option('--prod')
 	.option('--port [port]')
 	.description('')
-	.action(function (argument) {
-		runSeq('clean', 'build', 'copy', function(){
-			var instance = child.spawn(__dirname + '/momentum', ['start'], {
-				cwd: buildDir,
+	.action(function (options) {
+		var instance;
+
+		if(options.prod === true){
+			console.log('Running in production mode');
+			runSeq('clean', 'build', 'copy', function(){
+				instance = child.spawn(__dirname + '/momentum', ['start'], {
+					cwd: buildDir,
+					stdio: 'inherit' 
+				});
+
+				instance.on('close', function (code) {
+				  //console.log('child process exited with code ' + code);
+				});
+			})
+		} else {
+			console.log('Running in development mode');
+			instance = child.spawn('babel-node', 
+				['-e', 'require("momentumjs");', '--stage', '0'],
+			{
+				cwd: root,
 				stdio: 'inherit' 
 			});
-
-			instance.on('close', function (code) {
-			  //console.log('child process exited with code ' + code);
-			});
-		})
+		}
 	});
 
 program
@@ -65,6 +80,13 @@ gulp.task('copy', function(){
 	], {
 		base: root
 	}).pipe(gulp.dest(buildDir));
+});
+
+gulp.task('bundle', function(){
+	return gulp.src('**/*.{js,css}', {base: buildDiry
+	}).pipe(
+		shell(['jspm bundle '+ buildDir + ' ' + buildDir + '/bundle.js'])
+	).pipe(gulp.dest('bundle.js', {base: buildDir}))
 })
 
 program.parse(process.argv);
