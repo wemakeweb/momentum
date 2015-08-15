@@ -39,21 +39,26 @@ export default class MomentumServer{
 		 * we want to serve
 		 */
 
-		this.server.use('/app',
-			express.static(this.config.dirs.app)
+		this.server.use('/components',
+			express.static(this.config.root + '/components')
+		);
+
+		this.server.use('/models',
+			express.static(this.config.root + '/models')
 		);
 
 		this.server.use('/jspm_packages',
-			express.static(this.config.dirs.app + '/jspm_packages')
+			express.static(this.config.root + '/../jspm_packages')
 		);
 
-		this.server.use('/src',
-			express.static(this.config.dirs.root + '/src')
+		this.server.use('/node_modules',
+			express.static(this.config.root + '/../node_modules')
 		);
 
 		this.serveStaticFiles({
 			'/': 'index.html',
-			'/config.js': 'config.js'
+			'/config.js': 'config.js',
+			'/index.js' : 'index.js'
 		});
 	}
 
@@ -63,7 +68,7 @@ export default class MomentumServer{
 				server.get(route, (req, res, next) => {
 					res.sendFile(root + '/' + file);
 				});
-			})(this.server, this.config.dirs.app, map[route]);
+			})(this.server, this.config.root, map[route]);
 		}
 	}
 

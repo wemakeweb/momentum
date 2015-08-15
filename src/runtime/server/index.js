@@ -1,21 +1,16 @@
 import MomentumServer from './MomentumServer';
 import Path from 'path';
-import MomentumData from '../../data/server/';
+import MomentumData from '../../data/server/index';
 import io from 'socket.io';
 
 export default class ServerRuntime {
-	constructor(instance, dirname){
-		let rootPath = Path.join(dirname, '..');
-		let config = require(Path.join(rootPath, 'momentum.json'));
-
-		config.dirs = {
-			app: Path.join(rootPath, 'app'),
-			root: rootPath
-		};
-
+	constructor(instance, root){
+		let config = require(Path.join(root, 'momentum.json'));
+		config.root = root;
 		this.config = config;
 
 		this.checkEnvironment();
+		console.log('Booting Momentum Server…');
 		this.initializeTransports();
 		this.initializeData();
 	}

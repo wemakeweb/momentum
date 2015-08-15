@@ -45,7 +45,7 @@ export default class MomentumData {
 	}
 
 	getModels(){
-		let path = Path.join(this.config.dirs.app, 'models');
+		let path = Path.join(this.config.root, 'models');
 		let files = utils.readdirRecursiveSync(path);
 		let models = {};
 
