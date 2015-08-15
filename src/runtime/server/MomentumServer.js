@@ -56,7 +56,6 @@ export default class MomentumServer{
 		this.server.use('/node_modules/momentumjs/lib',
 			express.static(modulePath + 'lib')
 		);
-		console.log(modulePath + 'lib')
 
 		this.serveStaticFiles({
 			'/': this.config.root + '/index.html',
