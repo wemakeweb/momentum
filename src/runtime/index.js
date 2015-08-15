@@ -1,6 +1,16 @@
 import {isType, isClient} from '../utils';
-//import * as UserApplication from '/index' 
 import ClientRuntime from './client/index';
+
+/**
+ * this tricks the transformer
+ * to skip the require call 
+ * and only execute at
+ * runtime
+ */
+
+function f(mod){
+	return require(mod);
+}
 
 export default function(){
 	let runtime;
@@ -8,6 +18,12 @@ export default function(){
 	let root;
 
 	if(isClient){
+		/**
+		 * this require call should only be executed
+		 * by the jspm /systemjs require
+		 */
+		let UserApplication = require('__app');
+
 		if(UserApplication.App){
 			app = UserApplication.App;
 		} else if(UserApplication) {
@@ -20,18 +36,8 @@ export default function(){
 	} else {
 		root = process.cwd();
 		let appath = root + '/index.js';
-
-		//try{
-			app = require(appath);
-		/*} catch(err){
-			if(err.code === 'MODULE_NOT_FOUND'){
-				throw new Error('We couldnt find your application at: ' + appath);
-			} else {
-				throw err;
-			}
-		}*/
-
-		let ServerRuntime = require('./server');
+		app = f(appath);
+		let ServerRuntime = f('./server/index');
 		runtime = new ServerRuntime(app, root);
 	}
 
