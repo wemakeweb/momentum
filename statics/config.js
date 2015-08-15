@@ -22,6 +22,7 @@ System.config({
 System.config({
   "map": {
     "__app" : "__app:index",
+    "socket.io": "/socket.io/socket.io.js",
     "momentumjs": "momentumjs:node_modules/momentumjs/lib/Momentum", 
     "babel": "npm:babel-core@5.6.16",
     "babel-runtime": "npm:babel-runtime@5.6.16",
