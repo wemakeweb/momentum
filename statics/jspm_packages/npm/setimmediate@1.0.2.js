@@ -1,1 +1,0 @@
-module.exports = require("npm:setimmediate@1.0.2/setImmediate");
