@@ -7,49 +7,83 @@ var clean = require('gulp-clean');
 var runSeq = require('run-sequence').use(gulp);
 var path = require('path');
 var shell = require('gulp-shell');
+var fs = require('fs');
+var color = require('colors');
 
-var package = require('../package.json');
 var root = process.cwd();
 var buildDir = root + '/dist';
 
+var exists = fs.existsSync(root + '/momentum.json');
+
+if(!exists){
+	console.log('No Momentumjs installation was found in this directory.');
+	console.log('Install one with `momentumjs install`');
+	process.exit(1);
+} 
+
+var package = require('../package.json');
+var momentumjson = require(root + '/momentum.json');
+
 program
-	.command('run')
-	.option('--prod')
-	.option('--port [port]')
-	.description('')
-	.action(function (options) {
-		var instance;
+.command('run')
+.option('--prod')
+.description('')
+.action(function (options) {
+	// clone the actual env vars to avoid overrides
+	var env = Object.create(process.env);
+	env.NODE_EV = options.prod ? 'production' : 'development';
 
-		if(options.prod === true){
-			console.log('Running in production mode');
-			runSeq('clean', 'build', 'copy', function(){
-				instance = child.spawn(__dirname + '/momentum', ['start'], {
-					cwd: buildDir,
-					stdio: 'inherit' 
-				});
+	console.log(
+		'%s - V: %s - Env: %s', 
+		' Momentumjs '.toUpperCase().inverse.bold,
+		package.version.grey,
+		env.NODE_EV.grey
+	);
 
-				instance.on('close', function (code) {
-				  //console.log('child process exited with code ' + code);
-				});
-			})
+	if(options.prod === true){
+		runSeq('check', 'clean', 'build', 'copy', 'bundle', boot)
+	} else {
+		boot();	
+	}
+
+	function boot(){
+		console.log('Booting %s', '...'.grey);
+
+		if(options.prod){
+			child.spawn(__dirname + '/momentum', ['start'], {
+				cwd: buildDir,
+				stdio: 'inherit',
+				env: env
+			});
 		} else {
-			console.log('Running in development mode');
-			instance = child.spawn('babel-node', 
-				['-e', 'require("momentumjs");', '--stage', '0'],
-			{
+			child.spawn('babel-node', ['-e', 'require("momentumjs");', '--stage', '0'], {
 				cwd: root,
-				stdio: 'inherit' 
+				stdio: 'inherit',
+				env: env
 			});
 		}
-	});
+	}
+});
 
 program
-	.command('start')
-	.description('')
-	.action(function (argument) {
-		require('../lib/Momentum');
-	});
+.command('start')
+.description('')
+.action(function (argument) {
+	require('../lib/Momentum');
+});
 
+
+/**
+ * Gulp Tasks
+ * TODO: move in extern file
+ */
+
+ /**
+  * builds the server part of the
+  * application:
+  * - transform es6 -> es5 js code
+  * - copy to `buildDir`
+  */
 
 gulp.task('build', function () {
     return gulp.src([
@@ -68,10 +102,19 @@ gulp.task('build', function () {
         .pipe(gulp.dest(buildDir));
 });
 
+/**
+ * rm -r `buildDir`
+ */
+
 gulp.task('clean', function(){
-	return gulp.src('dist', {read: false})
+	return gulp.src(buildDir, {read: false})
     	.pipe(clean());
 });
+
+/**
+ * copy non .js files into
+ * `buildDir`
+ */
 
 gulp.task('copy', function(){
 	return gulp.src([
@@ -82,11 +125,35 @@ gulp.task('copy', function(){
 	}).pipe(gulp.dest(buildDir));
 });
 
+/**
+ * bundle the client/browser package
+ * with `jspm` and copy to `buildDir
+*/
+
 gulp.task('bundle', function(){
-	return gulp.src('**/*.{js,css}', {base: buildDiry
-	}).pipe(
-		shell(['jspm bundle '+ buildDir + ' ' + buildDir + '/bundle.js'])
-	).pipe(gulp.dest('bundle.js', {base: buildDir}))
-})
+	/**
+	 * gulp.src(''), gulp.dest('') does nothing but
+	 * is needed to correctly run
+	 * the task
+	 */
+	 //'jspm bundle-sfx "*" ' + buildDir + '/momentumjs.bundle.js --minify'
+	return gulp.src('').pipe(
+		shell(['jspm bundle "*" ' + buildDir + '/momentumjs.bundle.js --minify'], {cwd: root})
+	).pipe(gulp.dest(''));
+});
+
+/**
+ * check for the runtime dependencies
+ * `jspm` and `babel-node`
+ */
+
+gulp.task('check', function(){
+	return gulp.src('').pipe(
+		shell([
+			'command -v babel-node >/dev/null 2>&1 || { echo >&2 "Momentumjs requires babel-node to be installed as development server but it\'s not.  Aborting."; exit 1; }',
+			'command -v jspm >/dev/null 2>&1 || { echo >&2 "Momentumjs requires jspm to be installed but it\'s not.  Aborting."; exit 1; }'
+		])
+	).pipe(gulp.dest(''));
+});
 
 program.parse(process.argv);
