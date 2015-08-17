@@ -6,7 +6,7 @@
 
 # Install
 
-Momentumjs requires `nodejs` or `iojs` to be installed. We currently support only `rethinkdb` as database, that will change in the future. To install successful install `momentumjs` following the following steps:
+Momentumjs requires `nodejs` or `iojs`, `jspm` for the package management and `babel-node` as development server to be installed. We currently support only `rethinkdb` as database, that will change in the future. To successfully install `momentumjs` follow the steps:
 
 ```bash
 $ npm install momentumjs --save
@@ -29,6 +29,24 @@ than run:
 ```bash
 $ momentumjs install
 ```
+# momentumjs cli
+The momentumjs commandline interface provides a few tools for your development workflow.
+
+```bash
+$ momentumjs install
+```
+Installs the a basic skeleton for a momentumjs app in the current directory.
+
+```bash
+$ momentumjs run <options>
+```
+Starts the development server and serves the application.
+ __Options__
+
+ ```bash
+--prod
+```
+Starts the server in production mode. In production the app gets bundeld via `jspm` and served as single js file.
 
 
 # Custom index file
