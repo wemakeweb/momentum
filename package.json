@@ -1,6 +1,6 @@
 {
   "name": "momentumjs",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "isomorph webframework",
   "main": "./lib/Momentum.js",
   "bin": {

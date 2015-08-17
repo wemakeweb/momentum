@@ -132,13 +132,27 @@ gulp.task('copy', function(){
 
 gulp.task('bundle', function(){
 	/**
+	 * we should rather whitelist the things
+	 * we want to bundle instead of include everything
+	 * via '*' and then exclude the unwanted files
+	 */
+	var bundleArgs = ['"*"',  '- config.js', '+ momentumjs'];
+	var bundleName = '/momentumjs.bundle.js';
+	var bundleFlags = ['--minify'];
+
+	/**
 	 * gulp.src(''), gulp.dest('') does nothing but
 	 * is needed to correctly run
 	 * the task
 	 */
-	 //'jspm bundle-sfx "*" ' + buildDir + '/momentumjs.bundle.js --minify'
 	return gulp.src('').pipe(
-		shell(['jspm bundle "*" ' + buildDir + '/momentumjs.bundle.js --minify'], {cwd: root})
+		shell([
+			'jspm bundle-sfx ' 
+			+ bundleArgs.join(' ') + ' ' 
+			+ buildDir 
+			+ bundleName + ' '
+			+ bundleFlags.join(' ')
+		], {cwd: root})
 	).pipe(gulp.dest(''));
 });
 
