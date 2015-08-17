@@ -1,0 +1,16 @@
+logs
+*.log
+pids
+*.pid
+*.seed
+node_modules
+.DS_Store
+src
+test
+rethinkdb_data
+.babelrc
+.jscsrc
+.jshintrc
+gulpfile.js
+server.js
+.npmignore

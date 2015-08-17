@@ -1,18 +1,22 @@
 {
   "name": "momentumjs",
-  "version": "0.0.1",
-  "description": "",
-  "main": "./src/Momentum.js",
+  "version": "0.0.15",
+  "description": "isomorph webframework",
+  "main": "./lib/Momentum.js",
   "bin": {
     "momentumjs": "./bin/momentum"
   },
+  "files": [
+    "lib/",
+    "bin/"
+  ],
   "dependencies": {
-    "babel-runtime": "^5.8.20",
+    "colors": "^1.1.2",
     "commander": "^2.8.1",
+    "debug": "^2.2.0",
+    "ejs": "^2.3.3",
     "express": "^4.13.1",
-    "gulp-shell": "^0.4.2",
-    "gulp-spawn": "^0.3.0",
-    "merge": "^1.2.0",
+    "its-thinking": "0.0.4",
     "path-to-regexp": "^1.2.0",
     "rethinkdbdash": "^2.0.9",
     "run-sequence": "^1.1.2",
@@ -20,17 +24,28 @@
     "socket.io": "^1.3.6",
     "wolfy87-eventemitter": "^4.2.11"
   },
+  "jspm": {
+    "registry": "npm",
+    "dependencies": {
+      "path-to-regexp": "^1.2.0",
+      "setimmediate": "^1.0.2",
+      "wolfy87-eventemitter": "^4.2.11",
+      "debug": "^2.2.0"
+    },
+    "devDependencies": {}
+  },
   "devDependencies": {
     "babel": "~4.7.16",
     "babel-runtime": "^5.8.20",
-    "debug": "^2.2.0",
     "gulp": "^3.9.0",
     "gulp-babel": "^5.2.0",
     "gulp-clean": "^0.3.1",
     "jspm": "^0.15.7",
     "mocha": "^2.2.5",
     "mocha-babel": "^3.0.0",
-    "rimraf": "~2.3.2"
+    "rimraf": "~2.3.2",
+    "gulp-shell": "^0.4.2",
+    "gulp-spawn": "^0.3.0"
   },
   "scripts": {
     "test": "mocha --compilers js:mocha-babel test/models/*.js",
@@ -47,21 +62,11 @@
     "url": "https://github.com/wemakeweb/momentum/issues"
   },
   "homepage": "https://github.com/wemakeweb/momentum",
-  "jspm": {
-    "directories": {},
-    "dependencies": {
-      "css": "npm:jspm-loader-css@^0.1.6",
-      "debug": "npm:debug@^2.2.0",
-      "merge": "npm:merge@^1.2.0",
-      "path-to-regexp": "npm:path-to-regexp@^1.2.0",
-      "react": "npm:react@^0.14.0-beta1",
-      "setimmediate": "npm:setimmediate@^1.0.2",
-      "wolfy87-eventemitter": "npm:wolfy87-eventemitter@^4.2.11"
-    },
-    "devDependencies": {
-      "babel": "npm:babel-core@^5.1.13",
-      "babel-runtime": "npm:babel-runtime@^5.1.13",
-      "core-js": "npm:core-js@^0.9.4"
-    }
-  }
+  "directories": {
+    "test": "test"
+  },
+  "keywords": [
+    "isomorph",
+    "framework"
+  ]
 }
