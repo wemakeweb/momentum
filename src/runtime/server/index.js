@@ -7,6 +7,13 @@ export default class ServerRuntime {
 	constructor(instance, root){
 		let config = require(Path.join(root, 'momentum.json'));
 		config.root = root;
+
+		/**
+		 * globalize config
+		 */
+		 
+		Momentum.config = config;
+
 		this.config = config;
 		this.checkEnvironment();
 		this.initializeTransports();
