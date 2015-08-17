@@ -16,13 +16,14 @@
     "debug": "^2.2.0",
     "ejs": "^2.3.3",
     "express": "^4.13.1",
-    "its-thinking": "0.0.4",
     "path-to-regexp": "^1.2.0",
     "rethinkdbdash": "^2.0.9",
     "run-sequence": "^1.1.2",
     "setimmediate": "^1.0.2",
     "socket.io": "^1.3.6",
-    "wolfy87-eventemitter": "^4.2.11"
+    "wolfy87-eventemitter": "^4.2.11",
+    "babel-node": "^5.8.21",
+    "jspm": "0.16.0-beta.7"
   },
   "jspm": {
     "registry": "npm",
