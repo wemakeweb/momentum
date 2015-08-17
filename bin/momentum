@@ -17,7 +17,7 @@ var exists = fs.existsSync(root + '/momentum.json');
 
 if(!exists){
 	console.log('No Momentumjs installation was found in this directory.');
-	console.log('Install one with `momentumjs install`');
+	console.log('Install one with `momentumjs create`');
 	process.exit(1);
 } 
 
