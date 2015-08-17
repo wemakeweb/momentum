@@ -6,14 +6,13 @@ import MomentumType from './data/type/Types';
 import MomentumRecord from './data/MomentumRecord';
 import RethinkStore from './data/stores/RethinkStore';
 import * as Assets from './MomentumAssets';
+import createElement from './createElement';
 import Debug from 'debug';
 
-//tmp
-import { default as ReactMock } from './ReactMock' 
-
-let debug = Debug('momentum');
+let debug = Debug('momentum:index');
 
 var Momentum = {
+	createElement: createElement,
 	App: MomentumApp,
 	Component: MomentumComponent,
 	Router: MomentumRouter,
@@ -27,26 +26,56 @@ var Momentum = {
 	dev: true
 };
 
+/**
+ * determine in which mode we are running
+ * defaults to 'development'
+ */
+
+ if(process){
+ 	if(process.env && process.env.NODE_EV && process.env.NODE_EV === 'production'){
+ 		Momentum.dev = false;
+ 		Momentum.env = process.env.NODE_EV;
+ 	}
+ }
+
+ debug('running in %o', Momentum.env);
+
+/**
+ * determine what the global namespace is
+ * `window` -> we are in a browser
+ * `global` -> we are in a nodejs environment
+ */
+
 var globalNamespace;
 
 if(typeof window !== 'undefined'){
 	globalNamespace = window;
 	Momentum.isClient = true;
-	debug('is client');
 } else if(typeof global !== 'undefined'){
 	globalNamespace = global;
-	debug('is server'); 
 } else {
 	throw new Error('Could not determine globalNamespace');
 }
 
+debug('running as %o', Momentum.isClient ? 'client': 'server');
+
+/**
+ * gloablize momentum once per context
+ */
+
 if(!globalNamespace.Momentum){
 	globalNamespace.Momentum = Momentum;
-	globalNamespace.React = ReactMock;
+	globalNamespace.MomentumjsElementCreator = createElement;
 	debug('globalizing momentum');
 } else {
 	throw new Error('Momentum has already be initialized');
 }
+
+/**
+ * if this is the first require of the file
+ * start the runtime and assign to the global
+ * space as singleton
+ */
 
 if(!Momentum.Runtime){
 	Momentum.Runtime = new MomentumRuntime();
