@@ -1,13 +1,29 @@
 import express from 'express';
 import http from 'http';
 import path from 'path';
+import colors from 'colors';
+import fs from 'fs';
+import Debug from 'debug';
+import ejs from 'ejs';
+
+let debug = Debug('momentum:server');
 
 export default class MomentumServer{
-	constructor(config){
-		this.config = config;
+	userIndexFile: false
 
+	constructor(config, cb){
+		this.config = config;
 		let server = express(); 
 		let rawHttp = http.Server(server);
+
+		/**
+		 * render .ejs and .html files with
+		 * the ejs template engine
+		 */
+
+		server.set('view engine', 'ejs'); 
+		server.engine('html', ejs.renderFile);
+		server.set('views', __dirname + '/views');
 
 		server.use(this.logErrors);
 		server.use(this.clientErrorHandler);
@@ -52,10 +68,18 @@ export default class MomentumServer{
 		);
 
 		this.serveStaticFiles({
-			'/': this.config.root + '/index.html',
 			'/config.js': this.config.root + '/config.js',
 			'/index.js' : this.config.root + '/index.js'
 		});
+
+		if(fs.existsSync(this.config.root + '/index.html')){
+			this.userIndexFile = true;
+			debug('using custom index file');
+		} else {
+			debug('using default index file');
+		}
+
+		this.server.get('/', this.serveIndex.bind(this));
 	}
 
 	serveStaticFiles(map){
@@ -68,10 +92,55 @@ export default class MomentumServer{
 		}
 	}
 
+	serveIndex(req, res){
+		let options = {
+			body: 'Hey',
+			title: 'Momentumjs Application',
+			imports: ''
+		};
+
+		if(Momentum.dev){
+			options.imports = [
+				'socket.io/socket.io.js',
+				'jspm_packages/system.js',
+				'config.js'
+			];
+		} else {
+			options.imports = [
+				'socket.io/socket.io.js',
+				'jspm_packages/system.js',
+				'config.js'
+			];
+		}
+
+		options.imports = options.imports.map((file) => {
+			return '<script src="' + file + '"></script>';
+		})
+
+		options.imports.push('<script>System.import("momentumjs");</script>');
+		options.imports = options.imports.join('\n');
+
+		if(this.userIndexFile){
+			res.render(this.config.root + '/index.html', options);
+		} else {
+			res.render('index.ejs', options);
+		}
+	}
+
 	run(){
-		let port = this.config.http.port || 3000;
+		let port;
+
+		if(this.config.http.port){
+			port = this.config.http.port;
+			debug('using custom port: %s', port);
+		} else {
+			port = 3000;
+			debug('using default port: %s', port);
+		}
 
 		this.rawHttp.listen(port);
-		console.log('Server listening at: %s', port);
+		
+		console.log('Port: %s', port.toString().grey);
+		console.log('Ready!');
 	}
 }
