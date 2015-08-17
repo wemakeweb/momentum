@@ -1,7 +1,0 @@
-{
-	"blacklist":["regenerator"],
-	"compact": false,
-	"optional": [
-      "es7"
-    ]
-}
