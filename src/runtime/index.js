@@ -37,6 +37,7 @@ export default function(){
 		root = process.cwd();
 		let appath = root + '/index.js';
 		app = f(appath);
+
 		let ServerRuntime = f('./server/index');
 		runtime = new ServerRuntime(app, root);
 	}
