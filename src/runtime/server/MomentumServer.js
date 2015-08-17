@@ -55,23 +55,31 @@ export default class MomentumServer{
 		 * Only whitelist the folders 
 		 * we want to serve
 		 */
-		this.server.use('/components',
-			express.static(this.config.root + '/components')
-		);
 
-		this.server.use('/models',
-			express.static(this.config.root + '/models')
-		);
+		if(Momentum.dev){
+			this.server.use('/components',
+				express.static(this.config.root + '/components')
+			);
 
-		this.server.use('/jspm_packages',
-			express.static(this.config.root + '/jspm_packages')
-		);
+			this.server.use('/models',
+				express.static(this.config.root + '/models')
+			);
 
-		this.serveStaticFiles({
-			'/config.js': this.config.root + '/config.js',
-			'/index.js' : this.config.root + '/index.js'
-		});
+			this.server.use('/jspm_packages',
+				express.static(this.config.root + '/jspm_packages')
+			);
 
+			this.serveStaticFiles({
+				'/config.js': this.config.root + '/config.js',
+				'/index.js' : this.config.root + '/index.js'
+			});
+		} else {
+			this.serveStaticFiles({
+				'/momentumjs.bundle.js': this.config.root + '/bundle.js',
+				'/momentumjs.bundle.js.map': this.config.root + '/bundle.js.map'
+			});
+		}
+		
 		if(fs.existsSync(this.config.root + '/index.html')){
 			this.userIndexFile = true;
 			debug('using custom index file');
@@ -108,8 +116,7 @@ export default class MomentumServer{
 		} else {
 			options.imports = [
 				'socket.io/socket.io.js',
-				'jspm_packages/system.js',
-				'config.js'
+				'momentumjs.bundle.js'
 			];
 		}
 
@@ -117,7 +124,10 @@ export default class MomentumServer{
 			return '<script src="' + file + '"></script>';
 		})
 
-		options.imports.push('<script>System.import("momentumjs");</script>');
+		if(Momentum.dev){
+			options.imports.push('<script>System.import("momentumjs");</script>');
+		}
+
 		options.imports = options.imports.join('\n');
 
 		if(this.userIndexFile){
@@ -132,10 +142,10 @@ export default class MomentumServer{
 
 		if(this.config.http.port){
 			port = this.config.http.port;
-			debug('using custom port: %s', port);
+			debug('using custom port: %o', port);
 		} else {
 			port = 3000;
-			debug('using default port: %s', port);
+			debug('using default port: %o', port);
 		}
 
 		this.rawHttp.listen(port);
