@@ -8,9 +8,7 @@ export default class ServerRuntime {
 		let config = require(Path.join(root, 'momentum.json'));
 		config.root = root;
 		this.config = config;
-
 		this.checkEnvironment();
-		console.log('Booting Momentum Server…');
 		this.initializeTransports();
 		this.initializeData();
 	}
