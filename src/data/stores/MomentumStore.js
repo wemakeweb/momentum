@@ -57,6 +57,12 @@ export default class MomentumStore {
 			throw new Error('Momentum.Model please specify a model name');
 		}
 
+		for(let field in this.schema){
+			if(!this.schema[field] || !this.schema[field].validate){
+				throw new Error('Unknown Type for ' + Model.name + '.' + field);
+			}
+		}
+
 		/*if(!Model.tableName || Model.tableName === ''){
 			Model.tableName = Model.name;
 		}*/
