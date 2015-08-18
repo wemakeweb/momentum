@@ -34,6 +34,7 @@ export default class MomentumServer{
 		this.rawHttp = rawHttp;
 
 		this.bindServerRendering();
+		this.bindCustomFolders();
 	}
 
 	logErrors(err, req, res, next){
@@ -135,6 +136,24 @@ export default class MomentumServer{
 		} else {
 			res.render('index.ejs', options);
 		}
+	}
+
+	bindCustomFolders(){
+		if(!this.config.http.staticFolder){
+			return;
+		}
+		
+		let staticFolder = this.config.http.staticFolder;
+		let folders = Array.isArray(staticFolder) ? staticFolder : [staticFolder];
+
+		folders.forEach((folder) => {
+			if(folder.charAt(0) !== '/'){
+				folder = '/' + folder;
+			}
+
+			this.server.use(folder, express.static(this.config.root + '/' + folder));
+			debug('serving custom folder %o', folder);
+		});
 	}
 
 	run(){
