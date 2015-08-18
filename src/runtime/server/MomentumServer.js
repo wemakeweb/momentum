@@ -103,7 +103,7 @@ export default class MomentumServer{
 
 	serveIndex(req, res){
 		let options = {
-			body: 'Hey',
+			body: '',
 			title: 'Momentumjs Application',
 			imports: ''
 		};
