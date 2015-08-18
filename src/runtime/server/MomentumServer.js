@@ -142,7 +142,7 @@ export default class MomentumServer{
 		if(!this.config.http.staticFolder){
 			return;
 		}
-		
+
 		let staticFolder = this.config.http.staticFolder;
 		let folders = Array.isArray(staticFolder) ? staticFolder : [staticFolder];
 
@@ -161,10 +161,10 @@ export default class MomentumServer{
 
 		if(this.config.http.port){
 			port = this.config.http.port;
-			debug('using custom port: %o', port);
+			debug('using custom port %o', port);
 		} else {
 			port = 3000;
-			debug('using default port: %o', port);
+			debug('using default port %o', port);
 		}
 
 		this.rawHttp.listen(port);
