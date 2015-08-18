@@ -16,4 +16,11 @@ Types.number = class NumberType extends MomentumType {
 	}
 }
 
+Types.boolean = class BooleanType extends MomentumType {
+	static identifier = 'boolean'
+	static validate(value){
+		return value === true || value === false;
+	}
+}
+
 export default Types;
