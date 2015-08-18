@@ -9,7 +9,7 @@ import * as Assets from './MomentumAssets';
 import createElement from './createElement';
 import Debug from 'debug';
 
-let debug = Debug('momentum:index');
+let debug = Debug('momentum:runtime');
 
 var Momentum = {
 	createElement: createElement,
