@@ -76,8 +76,8 @@ export default class MomentumServer{
 			});
 		} else {
 			this.serveStaticFiles({
-				'/momentumjs.bundle.js': this.config.root + '/bundle.js',
-				'/momentumjs.bundle.js.map': this.config.root + '/bundle.js.map'
+				'/momentumjs.bundle.js': this.config.buildDir + '/bundle.js',
+				'/momentumjs.bundle.js.map': this.config.buildDir + '/bundle.js.map'
 			});
 		}
 		

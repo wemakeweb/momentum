@@ -23,22 +23,10 @@ var Momentum = {
 	},
 
 	isClient: false,
-	dev: true
+	dev: true,
+	env: 'development'
 };
 
-/**
- * determine in which mode we are running
- * defaults to 'development'
- */
-
- if(process){
- 	if(process.env && process.env.NODE_EV && process.env.NODE_EV === 'production'){
- 		Momentum.dev = false;
- 		Momentum.env = process.env.NODE_EV;
- 	}
- }
-
- debug('running in %o', Momentum.env);
 
 /**
  * determine what the global namespace is

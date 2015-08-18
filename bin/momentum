@@ -41,7 +41,8 @@ program
 	);
 
 	if(options.prod === true){
-		runSeq('check', 'clean', 'build', 'copy', 'bundle', boot)
+		env.buildDir = buildDir;
+		runSeq('check', 'clean', 'build', /*'copy',*/ 'bundle', boot)
 	} else {
 		boot();	
 	}
@@ -51,7 +52,7 @@ program
 
 		if(options.prod){
 			child.spawn(__dirname + '/momentum', ['start'], {
-				cwd: buildDir,
+				cwd: root,
 				stdio: 'inherit',
 				env: env
 			});
