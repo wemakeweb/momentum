@@ -1,12 +1,13 @@
 import Path from 'path';
 import utils from './utils';
 import MessageServer from './MessageServer';
+import Record from '../MomentumRecord';
 
 //drivers
-import RethinkDriver from '../drivers/RethinkDriver';
+import RethinkAdapter from '../adapters/RethinkAdapter';
 
-let drivers = {
-	RethinkDriver
+let adapters = {
+	RethinkAdapter
 };
 
 export default class MomentumData {
@@ -29,7 +30,7 @@ export default class MomentumData {
 			throw new Error('Please specify a tableName in momentum.json');
 		}
 
-		if(!(this.config.database.driver in drivers)){
+		if(!(this.config.database.adapter in adapters)){
 			throw new Error('Unknown Database Adapter: ' + this.config.database.adapter);
 		}
 
@@ -40,8 +41,8 @@ export default class MomentumData {
 	}
 
 	connectToDatabase(){
-		let Driver = drivers[this.config.database.driver];
-		this.driver = new Driver(this.config.database);
+		let Adapter = adapters[this.config.database.adapter];
+		this.adapter = new Adapter(this.config.database);
 	}
 
 	getModels(){
@@ -69,7 +70,7 @@ export default class MomentumData {
 	connectToClient(){
 		let messageServer = new MessageServer(this.socket);
 		let identifierMap = this.identifierMap;
-		let driver = this.driver;
+		let adapter = this.adapter;
 
 		function bind(method) {
 			return function(args){
@@ -77,7 +78,7 @@ export default class MomentumData {
 				let Model = identifierMap[modelIdentifier];
 				args[0] = Model;
 
-				return driver[method](...args);
+				return adapter[method](...args);
 			}
 		}
 

@@ -1,15 +1,14 @@
-import MomentumDriver from './MomentumDriver';
+import MomentumAdapter from './MomentumAdapter';
 import Record from '../MomentumRecord';
 import r from 'rethinkdbdash';
 import Debug from 'debug';
 
-let debug = Debug('momentum:rethinkdbdriver');
+let debug = Debug('momentum:rethinkdbadapter');
 
 
-export default class RethinkDB extends MomentumDriver {
+export default class RethinkDB extends MomentumAdapter {
 	
 	constructor(options){
-		super(options);
 		this.connection = r({
 			db: options.database
 		});
@@ -126,7 +125,7 @@ export default class RethinkDB extends MomentumDriver {
 				.get(query.criteria.id)
 				.changes()
 				.then((cursor) => {
-					resolve();
+					resolve(cursor);
 					cursor.each(binder)
 				})
 				.catch(reject)

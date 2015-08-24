@@ -1,7 +1,7 @@
-import SocketDriver from '../drivers/SocketDriver';
+import SocketAdapter from '../adapters/SocketAdapter';
 
 export default class MomentumData {
 	constructor(config, socket){
-		this.driver = new SocketDriver({ socket });
+		this.adapter = new SocketAdapter({ socket });
 	}
 }

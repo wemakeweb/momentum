@@ -99,7 +99,7 @@ export default class MomentumStore {
 		let validation = this.validateWithSchema(record);
 		
 		if(validation === true){
-			return Momentum.Runtime.data.driver.create(this, record, query);
+			return Momentum.Runtime.data.adapter.create(this, record, query);
 		} else {
 			return validation;
 		}
@@ -117,7 +117,7 @@ export default class MomentumStore {
 		
 		if(validation === true){
 			return new Promise((resolve, reject) => {
-				Momentum.Runtime.data.driver.update(this, oldRecord.primaryKey, propsToUpdate, newRecord)
+				Momentum.Runtime.data.adapter.update(this, oldRecord.primaryKey, propsToUpdate, newRecord)
 				.then(() => {
 					resolve(newRecord);
 				})
@@ -164,7 +164,7 @@ export default class MomentumStore {
 			return createPromiseAndReject('No value was passed to Model.get');
 		}
 
-		return Momentum.Runtime.data.driver.read(this, primaryKey, query);
+		return Momentum.Runtime.data.adapter.read(this, primaryKey, query);
 	}
 
 	/**
@@ -185,7 +185,7 @@ export default class MomentumStore {
 	}
 
 	static bind(Model, query, fn){
-		return Momentum.Runtime.data.driver.bind(Model, query, fn);
+		return Momentum.Runtime.data.adapter.bind(Model, query, fn);
 	}
 
 	static getIdentifier(){
