@@ -9,6 +9,7 @@ export default class MessageServer {
 
 	listeners = {}
 	streamListeners = {}
+	types = {}
 
 	constructor(socket){
 		this.socket = socket;
@@ -39,6 +40,19 @@ export default class MessageServer {
 		
 		if(method in this.listeners){
 			debug('method call %o with %o', method, args);
+
+			args = args.map((arg) => {
+				if(!arg.type){
+					return arg;
+				}
+
+				if(!(arg.type in this.types)){
+					throw new Error('unknown type `' + arg.type + '`');
+				}
+
+				let Type = this.types[arg.type];
+				return Type.fromDataObj(arg);
+			});	
 
 			let promise = this.listeners[method](args);
 
@@ -83,6 +97,10 @@ export default class MessageServer {
 		} else {
 			throw new Error('undefined method call from client');
 		}
+	}
+
+	registerType(Type){
+		this.types[Type.name] = Type;
 	}
 }
 

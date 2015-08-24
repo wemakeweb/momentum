@@ -91,5 +91,7 @@ export default class MomentumData {
 			.listen('find', bind('find'))
 
 		messageServer.streamListener('bind', bind('bind'))
+
+		messageServer.registerType(Record);
 	}
 }
