@@ -54,6 +54,7 @@ debug('running as %o', Momentum.isClient ? 'client': 'server');
 if(!globalNamespace.Momentum){
 	globalNamespace.Momentum = Momentum;
 	globalNamespace.MomentumjsElementCreator = createElement;
+	globalNamespace.React = { createElement: createElement };
 	debug('globalizing momentum');
 } else {
 	throw new Error('Momentum has already be initialized');
