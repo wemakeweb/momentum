@@ -1,4 +1,4 @@
-import { isType, isClient } from './utils';
+import { isType, isClient, isFunction } from './utils';
 import { setAttr, inlineAttrs, isInlineAttr, isEvent } from './Dom';
 import * as DomEvent from './DomEvent';
 import EventEmitter from 'wolfy87-eventemitter';
@@ -9,7 +9,65 @@ import Debug from 'debug';
 
 let debug = Debug('momentum:component');
 
-export default class MomentumComponent extends EventEmitter{
+export default class MomentumComponent extends EventEmitter {
+
+	/**
+	 * Methods you should overwrite
+	 */
+
+	/**
+     * storeFetch should fetch all your
+     * model dependencies and return the 
+     * model cursors
+     * @return MomentumModel
+	*/
+
+    storeSelect(){
+		
+	}
+
+	/**
+	 * gets called after one or many
+	 * of your model dependencies has been
+	 * updated. Arguments are records of the models
+	 * returned in `storeSelect`
+	 * @arguments MomentumRecod(s)
+	 */
+
+	storeDidUpdate(){
+		
+	}
+
+	 /**
+     * onAttached - Gets called when the 
+     * components attaches to the DOM 
+     */
+
+    onAttached(){
+    
+    }
+
+    /**
+     * onDetached - Gets called when the 
+     * components detaches from the DOM
+     */
+
+    onDetached(){
+
+    }
+
+    /**
+     * render - Render your Component
+     * @return MomentumNode | MomentumComponent
+     */
+
+	render(){
+		throw new Error('You must overwrite your Components .render method. This is also not callable via super');
+	}
+
+
+	/** Iternal Apis **/
+
 	/**
 	 * the document node the view 
 	 * is mounted on
@@ -54,7 +112,7 @@ export default class MomentumComponent extends EventEmitter{
 
 		// bind all events
 		this.on('attached', this._onAttached.bind(this));
-		this.initializeStoreBinding();
+		this.initializeStore();
 	}
 
 	renderToString(){
@@ -129,6 +187,7 @@ export default class MomentumComponent extends EventEmitter{
 			if(node.hasChilds()){
 				let index = 0;
 
+				// Array.from basicly copies the Array
 				Array.from(node.children).forEach(child => {
 					let subMids = mids.slice(0)
 					subMids.push(index++);
@@ -186,10 +245,11 @@ export default class MomentumComponent extends EventEmitter{
 
     	this.onAttached();
     }
-    
-    // @overwrite
-    onAttached(){
-    	//… your attached callback here
+
+    _onDetached(){
+    	// unregister Dom Events
+    	// cleanup
+    	this.onDetached();
     }
 
 
@@ -224,44 +284,31 @@ export default class MomentumComponent extends EventEmitter{
     	}
     }
 
-    /**
-     * storeFetch should fetch all your
-     * model dependencies and return the 
-     * model cursors
-     * @return MomentumModel
-	*/
-
-    storeSelect(){
-		
-	}
-
-	/**
-	 * gets called after one or many
-	 * of your model dependencies has been
-	 * updated. Arguments are records of the models
-	 * returned in `storeSelect`
-	 * @arguments MomentumRecod(s)
-	 */
-
-	storeDidUpdate(){
-		
-	}
-
 	/**
 	 * @api internal
 	 */
 
 	storeBindings = []
 
-	initializeStoreBinding(){
+	initializeStore(){
 		let model = this.storeSelect();
 
-		if(!model) return;
+		if(!model){
+			if(!isClient){
+				this._onReady();
+			}
+		}
 
 		model.then((record) => {
 			this.storeDidUpdate(record);
-			this.storeBindings.push(record.meta.query);
-			this.bindStore();
+			if(!isClient){
+				this._onReady();
+			}
+
+			if(isClient){
+				this.storeBindings.push(record.meta.query);
+				this.bindStore();
+			}
 		}).catch((err) => {
 			throw err;
 		})
@@ -278,6 +325,20 @@ export default class MomentumComponent extends EventEmitter{
 			MomentumStore.bind(query.model, query, didUpdate);
 		});
 	}
+
+
+	/**
+	 * @api internal
+	 * Lifecycle method to notify components ready-to-render state
+	 */
+
+	onReady(fn){
+		if(isFunction(fn)) {
+			this._onReady = fn;
+		}
+	}
+
+	_onReady = function(){}
 
 	/**
 	 * does querySelection based on the component
