@@ -88,7 +88,7 @@ program
 
 gulp.task('build', function () {
     return gulp.src([
-    	'models/**/*.js',
+    	'stores/**/*.js',
     	'components/**/*.js', 
     	'index.js'
     	], {

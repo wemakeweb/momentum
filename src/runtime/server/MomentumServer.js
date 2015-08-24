@@ -62,8 +62,8 @@ export default class MomentumServer{
 				express.static(this.config.root + '/components')
 			);
 
-			this.server.use('/models',
-				express.static(this.config.root + '/models')
+			this.server.use('/stores',
+				express.static(this.config.root + '/stores')
 			);
 
 			this.server.use('/jspm_packages',
