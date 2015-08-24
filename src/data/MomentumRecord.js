@@ -16,6 +16,8 @@ export default class MomentumRecord {
 			}
 
 			this.setMeta(metaProps);
+		} else {
+			this.setMeta({});
 		}
 	}
 
@@ -81,5 +83,9 @@ export default class MomentumRecord {
 				query: this.meta.query
 			}
 		}
+	}
+
+	static fromDataObj(dataObj){
+		return new MomentumRecord(dataObj.value, dataObj.meta);
 	}
 }
