@@ -22,7 +22,7 @@ import MomentumRecord from './MomentumRecord';
 
 let debug = Debug('momentum:messaging');
 
-export default class Message {
+export default class MessageClient {
 	prefix = 'mm'
 	version = '1'
 
