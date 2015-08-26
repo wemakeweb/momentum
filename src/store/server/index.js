@@ -2,6 +2,7 @@ import Path from 'path';
 import utils from './utils';
 import MessageServer from './MessageServer';
 import Record from '../MomentumRecord';
+import fs from 'fs';
 
 //drivers
 import RethinkAdapter from '../adapters/RethinkAdapter';
@@ -22,8 +23,8 @@ export default class MomentumData {
 			throw new Error('Please specify your database settings in momentum.json');
 		}
 
-		if(!this.config.database.driver){
-			throw new Error('Please specify a database driver in momentum.json');
+		if(!this.config.database.adapter){
+			throw new Error('Please specify a database adapter in momentum.json');
 		}
 
 		if(!this.config.database.tableName){
@@ -35,8 +36,17 @@ export default class MomentumData {
 		}
 
 		this.connectToDatabase();
-		let models = this.getModels();
-		this.initializeModels(models);
+
+		let modelFolder = Path.join(this.config.root, 'models');
+		
+		if(fs.existsSync(modelFolder)){
+			let models = this.getModels(modelFolder);
+			this.initializeModels(models);
+		} else {
+			console.log("No model folder was found!");
+		}
+
+		
 		this.connectToClient();
 	}
 
@@ -45,9 +55,8 @@ export default class MomentumData {
 		this.adapter = new Adapter(this.config.database);
 	}
 
-	getModels(){
-		let path = Path.join(this.config.root, 'models');
-		let files = utils.readdirRecursiveSync(path);
+	getModels(modelFolder){
+		let files = utils.readdirRecursiveSync(modelFolder);
 		let models = {};
 
 		files.forEach((item) => {

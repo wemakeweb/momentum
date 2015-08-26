@@ -15,8 +15,33 @@ export default class ServerRuntime {
 	}
 
 	loadConfig(rootPath){
-		let config = require(Path.join(rootPath, 'momentum.json'));
-		config.root = root;
+		let config;
+
+		/**
+		 * We should add a testing env
+		 * here which allows the running without
+		 * momentum.json files
+		 */
+		
+		try{
+			config = require(Path.join(rootPath, 'momentum.json'));
+			debug('using momentum.json config');
+		} catch(err){
+			console.log("Found no momentum.json file!");
+			debug('using default config');
+			config = { 
+				"database": {
+					"adapter": "RethinkAdapter",
+					"tableName": "dev"
+				},
+	
+				"http": {
+					"port": 8000
+				}
+			};
+		}
+		
+		config.root = rootPath;
 
 		/**
 		 * globalize config
