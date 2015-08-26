@@ -1,6 +1,6 @@
 import MomentumServer from './MomentumServer';
 import Path from 'path';
-import MomentumData from '../../data/server/index';
+import MomentumData from '../../store/server/index';
 import io from 'socket.io';
 import Debug from 'debug';
 
@@ -8,7 +8,14 @@ let debug = Debug('momentum:runtime');
 
 export default class ServerRuntime {
 	constructor(instance, root){
-		let config = require(Path.join(root, 'momentum.json'));
+		this.loadConfig(root);
+		this.initializeEnvironment();
+		this.initializeTransports();
+		this.initializeStores();
+	}
+
+	loadConfig(rootPath){
+		let config = require(Path.join(rootPath, 'momentum.json'));
 		config.root = root;
 
 		/**
@@ -16,14 +23,10 @@ export default class ServerRuntime {
 		 */
 		 
 		Momentum.config = config;
-
 		this.config = config;
-		this.checkEnvironment();
-		this.initializeTransports();
-		this.initializeData();
 	}
 
-	checkEnvironment(){
+	initializeEnvironment(){
 		/**
 		 * determine in which mode we are running
 		 * defaults to 'development'
@@ -50,7 +53,7 @@ export default class ServerRuntime {
 		this.http.run();
 	}
 
-	initializeData(){
+	initializeStores(){
 		this.data = new MomentumData(this.config, this.socket);
 	}
 }
