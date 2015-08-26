@@ -11,4 +11,4 @@ export function isFunction(obj){
 };
 
 
-export const isClient = (() => typeof window !== 'undefined' )();
+export const isClient = (() => typeof window !== 'undefined' && window.document && window.document.createElement )();
