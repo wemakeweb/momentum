@@ -1,5 +1,4 @@
-import _ from './src/MomentumRuntime';
-import TestModel from './app/models/TestModel';
+import TestModel from './model';
 import assert from 'assert';
 
 let record1;
