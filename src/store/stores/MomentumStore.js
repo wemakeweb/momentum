@@ -1,4 +1,6 @@
 import Debug from 'debug';
+import Record from '../MomentumRecord';
+import Collection from '../MomentumCollection';
 
 let debug = Debug('momentum:store');
 
@@ -95,7 +97,7 @@ export default class MomentumStore {
 			action: Query.CREATE,
 			model: this.getIdentifier()
 		});
-		let record = new Momentum.Record(data);
+		let record = new Record(data);
 		let validation = this.validateWithSchema(record);
 		
 		if(validation === true){
@@ -171,8 +173,25 @@ export default class MomentumStore {
 	 * finds records by given `criteria`
 	 */
 
-	static find(){
+	static find(criteria){
+		let query = new Query({
+			action: Query.READ,
+			model: this.getIdentifier(),
+			criteria: {
+				find: criteria
+			}
+		});
 
+		return new Promise((resolve, reject) => {
+			Momentum.Runtime.data.adapter.find(this, criteria)
+			.then((array) =>{
+				Collection.decorateArray(array, {query});
+				resolve(array);
+			})
+			.catch((err) => {
+				reject(err);
+			});
+		});
 	}
 
 	/**
@@ -180,8 +199,17 @@ export default class MomentumStore {
 	 * the passed `criteria`
 	 */
 
-	static findOne(){
+	static findOne(criteria){
+		let query = new Query({
+			action: Query.READ,
+			model: this.getIdentifier(),
+			criteria: {
+				find: criteria,
+				limit: 1
+			}
+		});
 
+		return Momentum.Runtime.data.adapter.findOne(this, criteria, query)
 	}
 
 	static bind(Model, query, fn){

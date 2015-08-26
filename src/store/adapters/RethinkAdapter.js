@@ -7,11 +7,16 @@ let debug = Debug('momentum:rethinkdbadapter');
 
 
 export default class RethinkDB extends MomentumAdapter {
-	
 	constructor(options){
+		super();
 		this.connection = r({
 			db: options.database
-		});
+		})
+
+		function err(e){
+			console.log(e);
+			process.exit(1);
+		}
 	}
 
 	tableCreate(Model){
@@ -94,16 +99,32 @@ export default class RethinkDB extends MomentumAdapter {
 			})
 	}
 
-	findOne(Model, spec, callback) {
-		return this.connection.table(Model.tableName)
-			.getAll(spec.search, { index : spec.index })
+	findOne(Model, spec, query) {
+		return new Promise((resolve, reject) => {
+			this.connection.table(Model.tableName)
+			.filter(spec)
 			.limit(1)
-			.run();
+			.run()
+			.then((records) => {
+				let data = records[0];
+				let id = data.id;
+				delete data.id;
+				let record = new Record(data, {
+					primaryKey: id,
+					query: query
+				});
+
+				resolve(record);
+			})
+			.catch((err) => {
+				reject(err);
+			});
+		})
 	}
 
-	find(Model, spec, callback) {
+	find(Model, spec) {
 		return this.connection.table(Model.tableName)
-			.getAll(spec.search, { index : spec.index })
+			.filter(spec)
 			.run();
 	}
 
