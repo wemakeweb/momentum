@@ -1,9 +1,10 @@
 import Debug from 'debug';
 import MomentumAdapter from './MomentumAdapter';
-import MessageClient as MomentumMessage from '../Message';
+import MomentumMessage from '../MessageClient';
 
 export default class SocketAdapter extends MomentumAdapter {
 	constructor(options){
+		super();
 		this.connection = options.socket;
 	}
 

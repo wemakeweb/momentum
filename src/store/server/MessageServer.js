@@ -1,5 +1,5 @@
 import Debug from 'debug';
-import Message from '../Message';
+import Message from '../MessageClient';
 
 let debug = Debug('momentum:messaging');
 
