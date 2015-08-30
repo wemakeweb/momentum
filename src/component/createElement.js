@@ -1,5 +1,5 @@
 import MomentumNode from './MomentumNode';
-import { isFunction } from './utils';
+import { isFunction } from '../utils';
 
 export default function createElement(tagNameOrComponent, attrs, ...childs){
 	if(isFunction(tagNameOrComponent)){

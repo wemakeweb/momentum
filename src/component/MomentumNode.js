@@ -1,4 +1,4 @@
-import { isType, isFunction } from './utils';
+import { isType, isFunction } from '../utils';
 
 export default class MomentumNode {
 	children = []

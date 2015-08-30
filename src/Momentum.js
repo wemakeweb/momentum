@@ -1,12 +1,12 @@
 import MomentumRuntime from './runtime/index';
-import MomentumApp from './MomentumApp';
-import MomentumComponent from './MomentumComponent';
-import MomentumRouter from './MomentumRouter';
+import MomentumApp from './component/MomentumApp';
+import MomentumComponent from './component/MomentumComponent';
+import MomentumRouter from './component/MomentumRouter';
 import MomentumType from './store/type/Types';
 import MomentumRecord from './store/MomentumRecord';
 import RethinkStore from './store/stores/RethinkStore';
-import * as Assets from './MomentumAssets';
-import createElement from './createElement';
+import * as Assets from './component/MomentumAssets';
+import createElement from './component/createElement';
 import Debug from 'debug';
 
 let debug = Debug('momentum:runtime');

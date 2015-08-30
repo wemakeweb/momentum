@@ -1,9 +1,9 @@
-import { isType, isClient, isFunction } from './utils';
+import { isType, isClient, isFunction } from '../utils';
 import { setAttr, inlineAttrs, isInlineAttr, isEvent } from './Dom';
 import * as DomEvent from './DomEvent';
 import EventEmitter from 'wolfy87-eventemitter';
 import MomentumNode from './MomentumNode';
-import MomentumStore from './store/stores/MomentumStore';
+import MomentumStore from '../store/stores/MomentumStore';
 import * as MomentumTree from './MomentumTree';
 import Debug from 'debug';
 

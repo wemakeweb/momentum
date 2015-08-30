@@ -1,5 +1,5 @@
 import MomentumComponent from './MomentumComponent';
-import {isClient} from './utils';
+import {isClient} from '../utils';
 import * as DomEvent from './DomEvent';
 import * as Dom from './Dom';
 import pathToRegexp from 'path-to-regexp';
