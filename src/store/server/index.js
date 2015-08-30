@@ -4,7 +4,7 @@ import MessageServer from './MessageServer';
 import Record from '../MomentumRecord';
 import fs from 'fs';
 
-//drivers
+//adapters
 import RethinkAdapter from '../adapters/RethinkAdapter';
 
 let adapters = {
@@ -71,7 +71,7 @@ export default class MomentumData {
 
 		for(let modelName in models){
 			let Model = models[modelName];
-			Model.initialize(Model, this.driver);
+			Model.initialize(Model, this.adapter);
 			this.identifierMap[Model.getIdentifier()] = Model;
 		}
 	}
