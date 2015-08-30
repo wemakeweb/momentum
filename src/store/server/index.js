@@ -37,13 +37,13 @@ export default class MomentumData {
 
 		this.connectToDatabase();
 
-		let modelFolder = Path.join(this.config.root, 'store');
+		let modelFolder = Path.join(this.config.root, 'stores');
 		
 		if(fs.existsSync(modelFolder)){
 			let models = this.getModels(modelFolder);
 			this.initializeModels(models);
 		} else {
-			console.log("No store folder was found!");
+			console.log("The folder `stores` was not found.");
 		}
 
 		
