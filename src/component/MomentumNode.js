@@ -21,7 +21,7 @@ export default class MomentumNode {
 		}
 	}
 
-	hasChilds(){
+	hasChildren(){
 		return this.children.length > 0;
 	}
 }

@@ -125,6 +125,7 @@ export default class MomentumComponent extends EventEmitter {
 	 */
 	renderToNode(parentNode){
 		let newNode = document.createElement('div');
+
 		this.nodeTree = this.render();
 		this._renderToNode(newNode, this.nodeTree, [0]);
 
@@ -164,6 +165,19 @@ export default class MomentumComponent extends EventEmitter {
 			return;
 		}
 
+		if( toString.call(node) === "[object Array]" ){
+	        var index = 0;
+	        
+	        node.forEach((item) => {
+	          var subMids = mids.slice(0);
+	              subMids.push(index++);
+
+	          var r = this._renderToNode(parentNode, item, subMids); 
+	          if(r) this.childViews.push(r);
+	        });
+	        return;
+      	}
+
 		if(!(node instanceof MomentumNode)){
 			selfRepresentation = document.createTextNode(node.toString());
 			parentNode.appendChild(selfRepresentation);
@@ -184,7 +198,7 @@ export default class MomentumComponent extends EventEmitter {
 				node.mid
 			);
 
-			if(node.hasChilds()){
+			if(node.hasChildren()){
 				let index = 0;
 
 				// Array.from basicly copies the Array
@@ -197,7 +211,7 @@ export default class MomentumComponent extends EventEmitter {
 		}
 
 		for(var attribute in node.attributes){
-			if(isInlineAttr(attribute)){
+			if(isInlineAttr(attribute) && !!node.attributes[attribute]){
 				setAttr(
 					selfRepresentation, 
 					attribute,
@@ -205,7 +219,11 @@ export default class MomentumComponent extends EventEmitter {
 				);
 			} else if(isEvent(attribute)){
 				let eventType = attribute.replace(/on/, '');
-				this.registerDOMEvent(node, eventType, node.attributes[attribute])				
+				DomEvent.add(
+		            selfRepresentation,
+		            eventType,
+		            node.attributes[attribute].bind(this)
+		        );			
 			} else {
 				debug('render: %o is not valid inline attribute', attribute);
 			}
@@ -229,6 +247,8 @@ export default class MomentumComponent extends EventEmitter {
      */
     
     _onAttached(){
+	    this.__attached = true;
+
     	for(let eventType in this.domEvents){
     		DomEvent.add(
     			this.documentNode,
@@ -276,11 +296,11 @@ export default class MomentumComponent extends EventEmitter {
     	for(let i = 0, len = listeners.length; i < len; i++){
     		let listener = listeners[i];
 
-    		if(listener.node.mid === target.getAttribute('data-mid')){
+    		//if(listener.node.mid === target.getAttribute('data-mid')){
     			if(listener.fn(event) === false){
     				break;
     			}
-    		}
+    		//}
     	}
     }
 
@@ -297,6 +317,8 @@ export default class MomentumComponent extends EventEmitter {
 			if(!isClient){
 				this._onReady();
 			}
+
+			return;
 		}
 
 		model.then((record) => {
@@ -310,8 +332,8 @@ export default class MomentumComponent extends EventEmitter {
 				this.bindStore();
 			}
 		}).catch((err) => {
-			throw err;
-		})
+			console.error('store binding failed with: ' + err);
+		});
 	}
 
 	/**

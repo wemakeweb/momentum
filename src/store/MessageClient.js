@@ -1,5 +1,6 @@
 import Debug from 'debug';
 import MomentumRecord from './MomentumRecord';
+import MomentumCollection from './MomentumCollection';
 
 /**
  * The socket message protocol
@@ -69,7 +70,12 @@ export default class MessageClient {
 				case 'MomentumRecord':
 					let record = new MomentumRecord(message.response.value, message.response.meta);
 					this.fn(record);
-				break
+				break;
+
+				case 'MomentumCollection':
+					let records = MomentumCollection.fromDataObj(message.response);
+					this.fn(records);
+				break;
 
 				default:
 					this.fn(message.response);
@@ -89,7 +95,12 @@ export default class MessageClient {
 					case 'MomentumRecord':
 						let record = new MomentumRecord(message.response.value, message.response.meta);
 						this.resolve(record);
-					break
+					break;
+
+					case 'MomentumCollection':
+						let records = MomentumCollection.fromDataObj(message.response);
+						this.resolve(records);
+					break;
 
 					default:
 						this.resolve(message.response);

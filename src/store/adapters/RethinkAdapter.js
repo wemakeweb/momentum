@@ -2,6 +2,7 @@ import MomentumAdapter from './MomentumAdapter';
 import Record from '../MomentumRecord';
 import r from 'rethinkdbdash';
 import Debug from 'debug';
+import Collection from '../MomentumCollection';
 
 let debug = Debug('momentum:rethinkdbadapter');
 
@@ -122,34 +123,62 @@ export default class RethinkDB extends MomentumAdapter {
 		})
 	}
 
-	find(Model, spec) {
-		return this.connection.table(Model.tableName)
+	find(Model, spec, query) {
+		return new Promise((resolve, reject) => {
+			this.connection.table(Model.tableName)
 			.filter(spec)
-			.run();
+			.run()
+			.then((array) => {
+				Collection.decorateArray(array, {query});
+				resolve(array);
+			})
+			.catch((err) => {
+				reject(err);
+			})
+		});
 	}
 
 	bind(Model, query, callback){
+		let inst = this;
 		let binder = function(err, data){
 			if(!err){
-				let primaryKey = data.new_val.id;
-				delete data.new_val.id;
-				let record = new Record(data.new_val, {
-					primaryKey
-				})
+				if(query.criteria.id){
+					let primaryKey = data.new_val.id;
+					delete data.new_val.id;
+					let record = new Record(data.new_val, {
+						primaryKey
+					})
 
-				callback(record);
+					callback(record);
+				} else {
+					inst.connection.table(Model.tableName)
+					.filter(query.criteria.find)
+					.run()
+					.then((array) => {
+						Collection.decorateArray(array, {query});
+						callback(array);
+					})
+				}
 			}
 		};
 
 		return new Promise((resolve, reject) => {
-			this.connection.table(Model.tableName)
-				.get(query.criteria.id)
-				.changes()
-				.then((cursor) => {
-					resolve(cursor);
-					cursor.each(binder)
-				})
-				.catch(reject)
+			let q = this.connection.table(Model.tableName);
+
+			if(query.criteria.id){
+				q = q.get(query.criteria.id);
+			} 
+
+			if(query.criteria.find){
+				q = q.filter(query.criteria.find);
+			}
+
+			q.changes()
+			.then((cursor) => {
+				resolve(cursor);
+				cursor.each(binder)
+			})
+			.catch(reject)
 		});
 	}
 }

@@ -3,6 +3,7 @@ import utils from './utils';
 import MessageServer from './MessageServer';
 import Record from '../MomentumRecord';
 import fs from 'fs';
+import Debug from 'debug';
 
 //adapters
 import RethinkAdapter from '../adapters/RethinkAdapter';
@@ -10,6 +11,8 @@ import RethinkAdapter from '../adapters/RethinkAdapter';
 let adapters = {
 	RethinkAdapter
 };
+
+let debug = Debug('momentum:data');
 
 export default class MomentumData {
 	identifierMap = {}
@@ -87,6 +90,7 @@ export default class MomentumData {
 				let Model = identifierMap[modelIdentifier];
 				args[0] = Model;
 
+				debug('Method call %o with %o', method, ...args);
 				return adapter[method](...args);
 			}
 		}

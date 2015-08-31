@@ -1,6 +1,5 @@
 import Debug from 'debug';
 import Record from '../MomentumRecord';
-import Collection from '../MomentumCollection';
 
 let debug = Debug('momentum:store');
 
@@ -137,16 +136,16 @@ export default class MomentumStore {
 	 * record
 	 */
 
-	static destroy(){
-
+	static destroy(id){
+		return Momentum.Runtime.data.adapter.destroy(this, id);
 	}
 
 	/**
 	 * alias method for destroy
 	 */
 
-	static delete(){
-		return this.destroy.apply(this, arguments);
+	static delete(id){
+		return this.destroy(id);
 	}
 
 	/**
@@ -182,16 +181,7 @@ export default class MomentumStore {
 			}
 		});
 
-		return new Promise((resolve, reject) => {
-			Momentum.Runtime.data.adapter.find(this, criteria)
-			.then((array) =>{
-				Collection.decorateArray(array, {query});
-				resolve(array);
-			})
-			.catch((err) => {
-				reject(err);
-			});
-		});
+		return Momentum.Runtime.data.adapter.find(this, criteria, query);	
 	}
 
 	/**

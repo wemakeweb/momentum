@@ -66,13 +66,19 @@ export default class MessageServer {
 			}
 
 			promise.then((record) => {
-				this.socket.emit(id, {
-					error: false,
-					response: record.toJSON()
-				});
+				try{
+					this.socket.emit(id, {
+						error: false,
+						response: record ? record.toJSON() : {}
+					});
+				} catch(err){
+					console.log(err);
+				}
 
-				debug('sending %o response:%o', id, record.toJSON());
+				debug('sending %o response:%o', id, record ? record.toJSON() : {});
 			}).catch((err) => {
+				console.log(err.stack);
+
 				this.socket.emit(id, {
 					error: err,
 					response: {}

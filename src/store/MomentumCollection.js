@@ -31,7 +31,10 @@ export default class MomentumCollection {
 		function toJSON() {
 			return {
 				type: 'MomentumCollection',
-				value: this,
+				/**
+				 * Array.from prevents cyclic toJSON call
+				 */
+				value: Array.from(this),
 				meta: {
 					query: this.meta.query
 				}
@@ -40,6 +43,8 @@ export default class MomentumCollection {
 	}
 
 	static fromDataObj(dataObj){
-		this.createFromArray(dataObj.value, dataObj.meta);
+		let array = Array.prototype.slice.call(dataObj.value);
+		this.decorateArray(array, dataObj.meta);
+		return array;
 	}
 }
