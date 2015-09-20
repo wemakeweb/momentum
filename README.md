@@ -24,31 +24,15 @@ add the momentumjs executable to your `package.json` scripts field like so:
 
 ```
 
-than run:
-
 ```bash
-$ momentumjs create
-```
-This will create a basic application skeleton to start your development. Then run the development server and your ready to go!
-```bash
-$ momentumjs run
+$ npm run momentumjs run
 ```
 
-# Next Steps
-
-1. Define a Component
-2. Define a Model
-
-
-# Documentation
-- Components 
-- Models
-- Stores
-- Production Mode
-- Custom Index File
-
-
-
-
-
-
+# Example Project
+```bash
+git clone https://github.com/wemakeweb/momentum-todomvc.git
+npm install 
+npm install babel -g
+npm run jspm install
+npm run momentumjs run
+```
