@@ -44,7 +44,7 @@ program
 		env.buildDir = buildDir;
 		runSeq('check', 'clean', 'build', /*'copy',*/ 'bundle', boot)
 	} else {
-		boot();	
+		runSeq('check', boot);
 	}
 
 	function boot(){
@@ -165,6 +165,7 @@ gulp.task('bundle', function(){
 gulp.task('check', function(){
 	return gulp.src('').pipe(
 		shell([
+			'command -v rethinkdb >/dev/null 2>&1 || { echo >&2 "Momentumjs requires rethinkdb to be installed as database but it\'s not.  Aborting."; exit 1; }',
 			'command -v babel-node >/dev/null 2>&1 || { echo >&2 "Momentumjs requires babel-node to be installed as development server but it\'s not.  Aborting."; exit 1; }',
 			'command -v jspm >/dev/null 2>&1 || { echo >&2 "Momentumjs requires jspm to be installed but it\'s not.  Aborting."; exit 1; }'
 		])
